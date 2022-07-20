@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Back Pain</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/APP_NAME.css')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='js/APP_NAME.js')}}"></script>
+</head>
+<body>
+<nav class="navbar">
+    <a class="home left_button" href="{{ url_for('index')}}">
+        Restart
+    </a>
+    <span class="title">Back Pain</span>
+    <a class="home right_button" href="https://www.mobilemsksolutions.com/" >
+        MobileMSK
+    </a>
+</nav>
+<div class="main">
+    <i style="font-size:15px;">This demo is for informational purposes only. <br>
+Your use of this Site cannot, under any circumstance, replace the services provided by a licensed healthcare professional. Proceeding to use this Site confirms that you have read and understood our Terms and agree to release MobileMSK from any liability.</i>
+   <br><br>
+{% block content %} {% endblock %}
+</div>
+</body>
+</html>
