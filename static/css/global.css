@@ -2,10 +2,10 @@
 
 :root {
     /* Call these with var(--*) */
-    --yellow-gold: #E1A730;
-    --deep-blue: #314A56;
-    --grey-blue: #8fa6bd;
-    --lighter-blue: #4980b5;
+    --yellow-gold: #000000;
+    --deep-blue: #616161;
+    --grey-blue: #787878;
+    --lighter-blue: #b4b4b4;
 
     --dark-purple: #5c068D;
     --light-purple: #9B26B7;
