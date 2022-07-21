@@ -27,10 +27,10 @@ def diagnose(questions, answers):
     data on the given diagnosis.
     """
     links = {
-        '1': 'https://docs.google.com/document/d/19HWu_QC2h8B3azfVwHaCVwoEqZzryqT5bs33HOQXOr8/edit?usp=sharing',
-        '2': 'https://docs.google.com/document/d/1FnUb-MCjq3LnqfUEfZHFl4HeN5D5Rd30cwA_72LuAOY/edit?usp=sharing',
-        '3': 'https://docs.google.com/document/d/1OhQcT4KmkNMRENJLiP4TTYgkB9GW54U1iKwEjIobsTM/edit?usp=sharing',
-        '4': 'https://docs.google.com/document/d/1afVn6zCr0kSjQt3StKTr8-o8lfP_Gzt6SWBh9SAP2wI/edit?usp=sharing'
+        '1': 'https://docs.google.com/presentation/d/1fIbGEIZ5rZgeKHw8TYQghTbsKqwqlhDtSSBAkm3xPsU/edit?usp=sharing',
+        '2': 'https://docs.google.com/presentation/d/1lF5JwR-ZaNiGYCVjsMEocCmfuwl2pkU5pZ30v6Ha0wM/edit?usp=sharing',
+        '3': 'https://docs.google.com/presentation/d/1APkxgELr0ay-4n6Tq0N1-CjylpwwPuhVZu_qCV90Ai0/edit?usp=sharing',
+        '4': 'https://docs.google.com/presentation/d/1APkxgELr0ay-4n6Tq0N1-CjylpwwPuhVZu_qCV90Ai0/edit?usp=sharing'
     }  # Dictionary with links the the google docs for each of the given links
     # Note if the links to the google docs change, we need to edit the Links dictionary!!
     with open('QuestionProfiles.csv') as file:  # Open the question profile
