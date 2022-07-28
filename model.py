@@ -27,7 +27,7 @@ def diagnose(questions, answers):
     data on the given diagnosis.
     """
     links = {
-        '1': 'https://docs.google.com/presentation/d/1fIbGEIZ5rZgeKHw8TYQghTbsKqwqlhDtSSBAkm3xPsU/edit?usp=sharing',
+        '1': 'https://docs.google.com/presentation/d/1cUBc5G1JMNM3qHb20wA3PAzc4kowVDpfTHVv_OD7nVk/edit?usp=sharing',
         '2': 'https://docs.google.com/presentation/d/1lF5JwR-ZaNiGYCVjsMEocCmfuwl2pkU5pZ30v6Ha0wM/edit?usp=sharing',
         '3': 'https://docs.google.com/presentation/d/1APkxgELr0ay-4n6Tq0N1-CjylpwwPuhVZu_qCV90Ai0/edit?usp=sharing',
         '4': 'https://docs.google.com/presentation/d/1APkxgELr0ay-4n6Tq0N1-CjylpwwPuhVZu_qCV90Ai0/edit?usp=sharing'
