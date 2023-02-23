@@ -1,16 +1,14 @@
 {% extends 'Base.html' %}
 
 {% block content %}
-{#    General Search Bar <br>#}
-{#    {% with search_bar_placeholder = 'Place Holder' %}#}
-{#        {% with search_bar_id = 'searchbar_id_1' %}#}
-{#            {% include 'Search_Bar.html' %}#}
-{#        {% endwith %}#}
-{#    {% endwith %}#}
-{#    <br><br>#}
-    <form action="{{ url_for('mobile_msk_questionaire') }}">
+    <h2>{{ header_1}}</h2>
+    <h4>{{ header_2 }}</h4>
+    <div style="display: inline-block">
+        <p style="max-width: 500px;">{{ explanation }}</p>
+    </div>
+    <form action="{{ url_for('red_flags_questionnaire') }}">
         <button style="width:300px;" type="submit" class="default_button" id="list_parts">
-            Start
+            Continue
         </button>
     </form>
 

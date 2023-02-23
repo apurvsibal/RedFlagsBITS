@@ -1,8 +1,19 @@
+from typing import Tuple
+
 import constants
 import csv
+import pandas as pd
 # import Excel as xl
 # import numpy as np
 
+
+def get_red_flag_question(question_number: int) -> (str, Tuple[str], str):
+    df = pd.read_csv('Moblie_MSK_Red_Flags.csv')
+    row = list(df.iloc[question_number-1])
+    question = row[0]
+    answers = row[1:3]
+    more_info = row[3]
+    return question, answers, more_info
 
 def Get_Questions_And_Answers():  # -> (list[str], dict[list[str]])
     """

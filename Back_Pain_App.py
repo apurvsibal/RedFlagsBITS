@@ -20,6 +20,41 @@ app.config['files'] = path + '/temp/'
 @app.route('/index', methods=('GET', 'POST'))
 def index():
     """
+
+    """
+    header_1 = 'Red Flags'
+    header_2 = 'For Back Pain'
+    explanation = """
+    Some cases of back pain can be serious, and require immediate medical attention.
+    We are going to ask a few question to understand the nature of your pain.
+    """
+    return render_template('index.html', header_1=header_1, header_2=header_2, explanation=explanation)
+
+@app.route('/red_flags', methods=('GET', 'POST'))
+@app.route('/red_flags/<int:question_number>', methods=('GET', 'POST'))
+def red_flags_questionnaire(question_number: int = 0):
+    num_question = 3
+    header_1 = 'Is your back pain associated with any of the following?'
+    if question_number and request.args.get('answer') == 'Yes':
+        header_1 = 'You need immediate care'
+        explanation = """
+            You answered 'Yes' to a question indicating you could be in need of emergency care. 
+            Use the map below to see some providers;
+            TODO: Map Below
+            """
+        return render_template('immediate_care.html', header_1=header_1, explanation=explanation)
+    elif not question_number:
+        question_number = 1
+    elif question_number > num_question:
+        return redirect(url_for('mobile_msk_questionaire'))
+    question, answers, more_information = model.get_red_flag_question(question_number)
+    return render_template('Red_Flags.html', header_1=header_1, question=question, answers=answers,
+                           more_information=more_information, next_question_number=question_number+1)
+
+
+@app.route('/Questionaire', methods=('GET', 'POST'))
+def mobile_msk_questionaire():
+    """
     The only real URL of the application. When the user calls it with a GET request it displays the questionnaire. Then
     when the user fills it out and sends back the answers to the questions via a post request, the answers are used to
     diagnose the user.

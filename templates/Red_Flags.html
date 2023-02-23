@@ -1,0 +1,21 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+    <h2>{{ header_1}}</h2>
+    <div style="display: inline-block">
+        <p style="max-width: 500px;">{{ question }}</p>
+    </div>
+    <form action="{{ url_for('red_flags_questionnaire', question_number=next_question_number) }}">
+        {% for answer in answers %}
+            <input type="radio" id="{{ answer }}" name="answer" value="{{ answer }}">
+            <label for="{{ answer }}">{{ answer }}</label><br>
+        {% endfor %}
+        <button style="width:300px;" type="submit" class="default_button">
+            Continue
+        </button>
+    </form>
+    <div style="display: inline-block">
+        <h3>More Information</h3>
+        <p style="max-width: 500px;">{{ more_information }}</p>
+    </div>
+{% endblock %}
