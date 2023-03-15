@@ -14,8 +14,9 @@
             Continue
         </button>
     </form>
-    <div style="display: inline-block">
-        <h3>More Information</h3>
+
+    <button style="width:300px;" class="default_button" onclick="hide_or_show_div('MoreInfo')">More Information</button><br>
+    <div id="MoreInfo" style="display: none; border: black 2px solid">
         <p style="max-width: 500px;">{{ more_information }}</p>
     </div>
 {% endblock %}
