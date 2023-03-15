@@ -39,10 +39,10 @@ def red_flags_questionnaire(question_number: int = 0):
         header_1 = 'You need immediate care'
         explanation = """
             You answered 'Yes' to a question indicating you could be in need of emergency care. 
-            Use the map below to see some providers;
-            TODO: Map Below
+            Use the map below to see some providers
             """
-        return render_template('immediate_care.html', header_1=header_1, explanation=explanation)
+        map_link = 'https://goo.gl/maps/zKXs4iFKqaqDwfJy6'
+        return render_template('immediate_care.html', header_1=header_1, explanation=explanation, map_link=map_link)
     elif not question_number:
         question_number = 1
     elif question_number > num_question:
