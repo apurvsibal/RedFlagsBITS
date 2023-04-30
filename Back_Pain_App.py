@@ -66,8 +66,21 @@ def mobile_msk_questionaire():
             answers[q] = request.form.get(q)  # Get the answer to the question q
         diagnosis_URL = model.diagnose(questions, answers)  # Gets the diagnosis based on the answers to the questions
         return render_template('Diagnosis.html', questions=questions, answers=answers, diagnosis=diagnosis_URL)
-    return render_template('questionaire.html', questions=questions, answers=answers)  # Display the questionnaire if
+    terms_conditions_url = url_for('temp_placeholder')  # Sets the URL for the terms and conditions
+    return render_template('questionaire.html', questions=questions, answers=answers,
+                           terms_conditions_url=terms_conditions_url)  # Display the questionnaire if
     # it has not been displayed yet
+
+
+@app.route('/OSWENTRY_Back_Pain')
+def OSWENTRY_Low_Back_Pain_Questionaire():
+    """
+
+    """
+
+@app.route('/temp_placeholder', methods=('GET', 'POST'))
+def temp_placeholder():
+    return 'Temporary Placeholder'
 
 
 if __name__ == '__main__':
