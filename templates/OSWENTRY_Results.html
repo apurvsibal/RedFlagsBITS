@@ -1,0 +1,18 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+    <h3>Score: {{ score }}</h3>
+    <h3>Disability Level: {{ disability }}</h3>
+
+    <br>
+    <div style="display: flex; justify-content: center">
+        <div style="text-align: left">
+            <h4>References:</h4>
+            <p>
+            Fairbank JC, Pynsent PB. “The Oswestry Disability Index.” Spine 2000: 25(22):2940-2952<br>
+            Fairbank JCT, Couper J, Davies JB. “The Oswestry Low Back Pain Questionnaire.” Physiotherapy 1980; 66:271-273
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

@@ -77,6 +77,19 @@ def OSWENTRY_Low_Back_Pain_Questionaire():
     """
 
     """
+    questions = model.get_OSWENTRY_Questionnaire()
+    post_URL = url_for('OSWENTRY_Low_Back_Pain_Questionaire_evaluation')
+    return render_template('OSWENTRY_questionnaire.html', questions=questions, post_URL=post_URL)
+
+
+@app.route('/OSWENTRY_Back_Pain', methods=['POST'])
+def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
+    """
+
+    """
+    score = model.score_OSWENTRY(request.form)
+    disability = model.get_disability_level_from_score(score)
+    return render_template('OSWENTRY_Results.html', score=score, disability=disability)
 
 @app.route('/temp_placeholder', methods=('GET', 'POST'))
 def temp_placeholder():
