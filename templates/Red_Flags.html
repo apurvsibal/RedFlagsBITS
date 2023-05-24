@@ -7,10 +7,10 @@
     </div>
     <form action="{{ url_for('red_flags_questionnaire', question_number=next_question_number) }}">
         {% for answer in answers %}
-            <input type="radio" id="{{ answer }}" name="answer" value="{{ answer }}">
+            <input type="radio" id="{{ answer }}" name="answer" value="{{ answer }}" onClick="Enable_Submit('submit_button')">
             <label for="{{ answer }}">{{ answer }}</label><br>
         {% endfor %}
-        <button style="width:300px;" type="submit" class="default_button">
+        <button style="width:300px;" type="submit" class="default_button" id="submit_button" disabled>
             Continue
         </button>
     </form>

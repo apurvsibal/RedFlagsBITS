@@ -63,3 +63,32 @@ def diagnose(questions, answers):
     return links[profile]  # Return the link to the document containing information on the diagnosis
 
 
+def get_OSWENTRY_Questionnaire():
+    with open('OSWESTRY_pain.csv') as file:  # Opens the file with the questions and answers
+        reader = csv.reader(file)  # Creates a reader object
+        questions = [row for i, row in enumerate(reader) if i]
+    return questions
+
+
+def score_OSWENTRY(answers):
+    questions = get_OSWENTRY_Questionnaire()
+    question_length = len(questions)
+    score = 0
+    for i in range(question_length):
+        answer = answers.get(f'{i + 1}')
+        if answer is None:
+            continue
+        score += (questions[i].index(answer) - 2)
+    return score
+
+def get_disability_level_from_score(score):
+    if score < 5:
+        return 'No Disability'
+    elif score < 15:
+        return 'Mild Disability'
+    elif score < 25:
+        return 'Moderate Disability'
+    elif score < 35:
+        return 'Severe Disability'
+    else:
+        return 'Completely Disabled'
