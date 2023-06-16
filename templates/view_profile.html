@@ -1,0 +1,34 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+    <h1>User Profile</h1>
+    <h2>Personal Information</h2>
+    <p>Full Name: {{ user[1] }}</p>
+    <p>Gender: {{ user[2] }}</p>
+    <p>Age: {{ user[3] }}</p>
+    <p>Date of Birth: {{ user[4] }}</p>
+    <p>Contact Details: {{ user[5] }}</p>
+    <p>Emergency Contact: {{ user[6] }}</p>
+
+    <h2>Medical Records</h2>
+    <form method="POST" action="/profile/{{ user_id }}">
+        <label for="medical_history">Medical Problem:</label><br>
+        <textarea id="medical_history" name="medical_history" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h3>Previous Medical Records</h3>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Medical History</th>
+        </tr>
+        {% for record in medical_records %}
+        <tr>
+            <td>{{ record[2] }}</td>
+            <td>{{ record[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
