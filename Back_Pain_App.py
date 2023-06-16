@@ -82,6 +82,20 @@ def OSWENTRY_Low_Back_Pain_Questionaire():
     return render_template('OSWENTRY_questionnaire.html', questions=questions, post_URL=post_URL)
 
 
+@app.route('/appointments')
+def check_testing():
+    """
+
+    """
+    return render_template('appointments.html')
+
+
+@app.route('/confirm_appointment/<int:date>', methods=('GET', 'POST'))
+def confirm_appoitments(date: int = ''):
+    print("Hello:  ", date)
+    return render_template('confirm_appointment.html', date=date)
+
+
 @app.route('/OSWENTRY_Back_Pain', methods=['POST'])
 def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
     """
