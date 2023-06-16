@@ -9,11 +9,25 @@ from flask import Flask, render_template, request, url_for, redirect
 import os
 # from datetime import date
 import model
+from flask_mail import Mail, Message
+from pyfcm import FCMNotification
+import schedule
+import time
 
 app = Flask(__name__)
 path = str(os.path.dirname(os.path.abspath(__file__)))
 path = path.replace('\\', '/')
 app.config['files'] = path + '/temp/'
+
+# Code for setting up the email server
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'saranshsharma12345@gmail.com'
+app.config['MAIL_PASSWORD'] = 'vlmrcatiiszerkzk'
+app.config['MAIL_DEFAULT_SENDER'] = 'saranshsharma12345@gmail.com'
+
+mail = Mail(app)
 
 
 @app.route('/', methods=('GET', 'POST'))  # Route and accepted Methods
@@ -94,6 +108,44 @@ def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
 @app.route('/temp_placeholder', methods=('GET', 'POST'))
 def temp_placeholder():
     return 'Temporary Placeholder'
+
+# Implementing the appointment reminder email
+@app.route('/schedule-appointment',methods =('POST', 'GET'))
+
+def schedule_appointment():
+    if request.method == 'POST':
+        appointment_details = {
+                    'name': request.form.get('name'),
+                    'email': request.form.get('email'),
+                    'date': request.form.get('date'),
+                    'time': request.form.get('time')
+                }
+
+        scheduled_time = request.form.get('time')
+
+        print(appointment_details)
+
+
+        def send_email_reminder(appointment_details):
+            subject = 'Appointment Reminder'
+            body = f"Dear {appointment_details['name']}, your appointment is scheduled for {appointment_details['date']} at {appointment_details['time']}."
+
+            msg = Message(subject=subject, body=body, recipients=[appointment_details['email']])
+            mail.send(msg)
+
+        # sending confirmation mail
+        send_email_reminder(appointment_details)
+        def schedule_email(appointment_details, scheduled_time):
+            schedule.every().day.at(scheduled_time).do(send_email_reminder, appointment_details)
+
+            while True:
+                schedule.run_pending()
+        schedule_email(appointment_details, scheduled_time)
+        
+        return 'Appointment scheduled successfully'
+    else:
+        # I have created a schedule appointment page just for my code to work. This task is assigned to Shashwat. So this section will be his code.
+        return render_template('schedule-appointment.html')
 
 
 if __name__ == '__main__':
