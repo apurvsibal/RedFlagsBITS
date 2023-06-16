@@ -2,4 +2,23 @@
 @import "Squared.css";
 @import "autocomplete.css";
 
-/* Write CSS Specific to the Application Here */
+form input[type=text],
+form input[type=password],
+form input[type=number] {
+  background-color: #F0F0F0;
+}
+
+.mandatory
+{
+   border: 1px solid #ced4da;
+}
+
+.mandatory:required
+{
+   border-color: red;
+}
+
+.login-body
+{
+  background-color: #F5F5F5;
+}
