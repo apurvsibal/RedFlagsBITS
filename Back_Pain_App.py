@@ -9,12 +9,21 @@ from flask import Flask, render_template, request, url_for, redirect
 import os
 # from datetime import date
 import model
+from flask_babel import Babel, gettext
+import store
 
 app = Flask(__name__)
 path = str(os.path.dirname(os.path.abspath(__file__)))
 path = path.replace('\\', '/')
 app.config['files'] = path + '/temp/'
 
+babel = Babel(app)
+app.config['LANGUAGES'] = {'en': 'English', 'de': 'Deutsch'}
+
+lang = 'en'
+def get_locale():
+    return store.lang
+babel.init_app(app, locale_selector=get_locale)
 
 @app.route('/', methods=('GET', 'POST'))  # Route and accepted Methods
 @app.route('/index', methods=('GET', 'POST'))
@@ -22,25 +31,22 @@ def index():
     """
 
     """
-    header_1 = 'Red Flags'
-    header_2 = 'For Back Pain'
-    explanation = """
-    Some cases of back pain can be serious, and require immediate medical attention.
-    We are going to ask a few question to understand the nature of your pain.
-    """
+    store.lang  = request.form.get('language')
+    #print(store.lang)
+
+    header_1 = gettext('Red Flags')
+    header_2 = gettext('For Back Pain')
+    explanation = gettext('Some cases of back pain can be serious, and require immediate medical attention. We are going to ask a few question to understand the nature of your pain.')
     return render_template('index.html', header_1=header_1, header_2=header_2, explanation=explanation)
 
 @app.route('/red_flags', methods=('GET', 'POST'))
 @app.route('/red_flags/<int:question_number>', methods=('GET', 'POST'))
 def red_flags_questionnaire(question_number: int = 0):
     num_question = 3
-    header_1 = 'Is your back pain associated with any of the following?'
-    if question_number and request.args.get('answer') == 'Yes':
-        header_1 = 'You need immediate care'
-        explanation = """
-            You answered 'Yes' to a question indicating you could be in need of emergency care. 
-            Use the map below to see some providers
-            """
+    header_1 = gettext('Is your back pain associated with any of the following?')
+    if question_number and request.args.get('answer') == gettext('Yes'):
+        header_1 = gettext('You need immediate care')
+        explanation = gettext("You answered 'Yes' to a question indicating you could be in need of emergency care. Use the map below to see some providers")
         map_link = 'https://goo.gl/maps/zKXs4iFKqaqDwfJy6'
         return render_template('immediate_care.html', header_1=header_1, explanation=explanation, map_link=map_link)
     elif not question_number:
