@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Schedule an Appointment</h2>
+    <div id="calendar" class="calendar"></div>
+    <form id="appointment-form" method="POST" action="{{ url_for('appointment') }}">
+        <input type="hidden" id="selected-date" name="selected_date" value="">
+        <input type="hidden" id="selected-time" name="selected_time" value="">
+        <button type="submit" id="submit-btn" disabled>Schedule Appointment</button>
+    </form>
+    <script>
+        // Function to handle the selection of a date and time
+        function selectDate(date, time) {
+            // Update the hidden input fields with the selected date and time
+            document.getElementById('selected-date').value = date;
+            document.getElementById('selected-time').value = time;
+
+            // Enable the submit button
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        // Render the calendar
+        renderCalendar(selectDate); // Pass the selectDateTime function as a callback
+    </script>
+    <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+{% endblock %}
