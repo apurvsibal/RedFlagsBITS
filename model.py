@@ -3,17 +3,16 @@ from Back_Pain_App import get_locale
 import constants
 import csv
 import pandas as pd
-import store
 # import Excel as xl
 # import numpy as np
 def path(fil):
-    lang = store.lang
-    print(lang)
+    lang = constants.lang
     if(lang is None):
         lang='en'
-    qprofile = lang + '/QuestionProfiles.csv'
-    osws = lang + '/OSWESTRY_pain.csv'
-    rf = lang + '/Moblie_MSK_Red_Flags.csv'
+    print(lang)
+    qprofile = 'locales/' + lang + '/QuestionProfiles.csv'
+    osws = 'locales/' + lang + '/OSWESTRY_pain.csv'
+    rf = 'locales/' + lang + '/Moblie_MSK_Red_Flags.csv'
     if(fil=='rf'):
         return rf
     if(fil=='osws'):

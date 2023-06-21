@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-16 19:57+0530\n"
+"POT-Creation-Date: 2023-06-21 15:49+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,96 +17,96 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: Back_Pain_App.py:34
+#: Back_Pain_App.py:37
 msgid "Red Flags"
-msgstr "Banderas rojas"
+msgstr "红旗"
 
-#: Back_Pain_App.py:35
+#: Back_Pain_App.py:38
 msgid "For Back Pain"
-msgstr "para el dolor de espalda"
+msgstr "对于背痛"
 
-#: Back_Pain_App.py:36
+#: Back_Pain_App.py:39
 msgid "Some cases of back pain can be serious, and require immediate medical attention. We are going to ask a few question to understand the nature of your pain."
-msgstr "Algunos casos de dolor de espalda pueden ser graves y requieren atención médica inmediata. Vamos a hacerle algunas preguntas para comprender la naturaleza de su dolor."
-
-#: Back_Pain_App.py:43
-msgid "Is your back pain associated with any of the following?"
-msgstr "¿Su dolor de espalda está asociado con alguno de los siguientes?"
-
-#: Back_Pain_App.py:44
-msgid "Yes"
-msgstr "Sí"
-
-#: Back_Pain_App.py:45
-msgid "You need immediate care"
-msgstr "Necesita atención inmediata"
+msgstr "有些背痛可能很严重，需要立即就医。我们将问几个问题来了解您疼痛的性质。"
 
 #: Back_Pain_App.py:46
-msgid "You answered 'Yes' to a question indicating you could be in need of emergency care. Use the map below to see some providers "
-msgstr "Respondió 'Sí' a una pregunta que indica que podría necesitar atención de emergencia. Use el mapa a continuación para ver algunos proveedores msgstr"
+msgid "Is your back pain associated with any of the following?"
+msgstr "您的背痛是否与以下任何一项有关？"
 
-#: templates/Base.html:6
+#: Back_Pain_App.py:47
+msgid "Yes"
+msgstr "是的"
+
+#: Back_Pain_App.py:48
+msgid "You need immediate care"
+msgstr "您需要立即护理"
+
+#: Back_Pain_App.py:49
+msgid "You answered 'Yes' to a question indicating you could be in need of emergency care. Use the map below to see some providers"
+msgstr "您对表明您可能需要紧急护理的问题回答“是”。使用下面的地图查看一些供应商"
+
+#: templates/Base.html:6 templates/Base.html:15
 msgid "Back Pain"
-msgstr "Dolor de espalda"
+msgstr "背疼"
 
 #: templates/Base.html:13
 msgid "Restart"
-msgstr "Reanudar"
+msgstr "重新开始"
 
 #: templates/Base.html:17
 msgid "Your Site"
-msgstr "Tú sitio"
+msgstr "您的网站"
 
 #: templates/Diagnosis.html:7
 msgid "Our quiz identified solutions for your pain."
-msgstr "Nuestro cuestionario identificó soluciones para su dolor."
+msgstr "我们的测验为您的痛苦确定了解决方案。"
 
 #: templates/Diagnosis.html:11
 msgid "Please use this link to learn more."
-msgstr "Utilice este enlace para obtener más información."
+msgstr "请使用此链接了解更多信息。"
 
 #: templates/Diagnosis.html:15
 msgid "Link to OSWENTRY Questionnaire"
-msgstr "Enlace al cuestionario OSWENTRY"
+msgstr "OSWENTRY 调查问卷链接"
 
 #: templates/OSWENTRY_Results.html:6
 msgid "Thank you for using MobileMSK!"
-msgstr "¡Gracias por usar MobileMSK!"
+msgstr "感谢您使用 MobileMSK！"
 
 #: templates/OSWENTRY_Results.html:8
 msgid "Is there anything you would like to share with us to prepare for your appointment?"
-msgstr "¿Hay algo que le gustaría compartir con nosotros para prepararse para su cita?"
+msgstr "为了准备您的预约，您有什么想与我们分享的吗？"
 
 #: templates/OSWENTRY_Results.html:11 templates/OSWENTRY_questionnaire.html:15
 #: templates/questionaire.html:23
 msgid "Submit"
-msgstr "Entregar"
+msgstr "提交"
 
 #: templates/OSWENTRY_Results.html:16
 msgid "References:"
-msgstr "Referencias:"
+msgstr "参考"
 
 #: templates/OSWENTRY_Results.html:18
 msgid "Fairbank JC, Pynsent PB. “The Oswestry Disability Index.” Spine 2000: 25(22):2940-2952"
-msgstr "Fairbank JC, Pynsent PB. “El índice de discapacidad de Oswestry”. Columna vertebral 2000: 25(22):2940-2952"
+msgstr "费正清 JC、Pynsent PB。 “Oswestry 残疾指数。”脊柱 2000: 25(22):2940-2952"
 
 #: templates/OSWENTRY_Results.html:19
 msgid "Fairbank JCT, Couper J, Davies JB. “The Oswestry Low Back Pain Questionnaire.” Physiotherapy 1980; 66:271-273"
-msgstr "Fairbank JCT, Couper J, Davies JB. “Cuestionario de dolor lumbar de Oswestry”. Fisioterapia 1980; 66:271-273"
+msgstr "费尔班克 JCT、库珀 J、戴维斯 JB。 “Oswestry 腰痛问卷。”物理治疗1980； 66:271-273"
 
 #: templates/Red_Flags.html:14 templates/index.html:11
 msgid "Continue"
-msgstr "Continuar"
+msgstr "继续"
 
 #: templates/Red_Flags.html:18
 msgid "More Information"
-msgstr "Más información"
+msgstr "更多信息"
 
 #: templates/questionaire.html:19
 msgid "I agree to"
-msgstr "estoy de acuerdo con"
+msgstr "我同意"
 
 #: templates/questionaire.html:19
 msgid "Terms & Conditions"
-msgstr "Términos y condiciones"
+msgstr "条款和条件"
 

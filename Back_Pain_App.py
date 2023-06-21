@@ -10,7 +10,7 @@ import os
 # from datetime import date
 import model
 from flask_babel import Babel, gettext
-import store
+import constants
 
 app = Flask(__name__)
 path = str(os.path.dirname(os.path.abspath(__file__)))
@@ -18,11 +18,11 @@ path = path.replace('\\', '/')
 app.config['files'] = path + '/temp/'
 
 babel = Babel(app)
-app.config['LANGUAGES'] = {'en': 'English', 'de': 'Deutsch'}
+app.config['LANGUAGES'] = {'en': 'English', 'es': 'Spanish', 'fr': 'French', 'hi':'Hindi','zh':'Chinese'}
 
 lang = 'en'
 def get_locale():
-    return store.lang
+    return constants.lang
 babel.init_app(app, locale_selector=get_locale)
 
 @app.route('/', methods=('GET', 'POST'))  # Route and accepted Methods
@@ -31,13 +31,15 @@ def index():
     """
 
     """
-    store.lang  = request.form.get('language')
-    #print(store.lang)
-
-    header_1 = gettext('Red Flags')
-    header_2 = gettext('For Back Pain')
-    explanation = gettext('Some cases of back pain can be serious, and require immediate medical attention. We are going to ask a few question to understand the nature of your pain.')
-    return render_template('index.html', header_1=header_1, header_2=header_2, explanation=explanation)
+    if request.method == 'POST':
+        constants.lang = request.json.get('language')
+        print(constants.lang)
+        return f"You selected: {constants.lang}"
+    else:
+        header_1 = gettext('Red Flags')
+        header_2 = gettext('For Back Pain')
+        explanation = gettext('Some cases of back pain can be serious, and require immediate medical attention. We are going to ask a few question to understand the nature of your pain.')
+        return render_template('index.html', header_1=header_1, header_2=header_2, explanation=explanation)
 
 @app.route('/red_flags', methods=('GET', 'POST'))
 @app.route('/red_flags/<int:question_number>', methods=('GET', 'POST'))

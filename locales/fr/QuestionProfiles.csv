@@ -1,0 +1,9 @@
+Où est votre douleur la pire ?,"Dans mon dos, au-dessus de ma taille ou plus haut (dos dominant).",0.667,0.375,-0.1875,-0.375
+,Dans mes fesses ou mes jambes (jambe dominante).,-0.125,-0.1875,0.375,0.375
+"Votre douleur est-elle constante ? Est-ce que ça s'arrête jamais, même pour un instant ?","Ma douleur ne s'arrête jamais, elle est toujours présente (constante).",-0.05,-0.1875,0.375,-0.375
+,Il y a des moments où ma douleur disparaît complètement (intermittente).,-0.05,0.375,-0.1875,0.375
+Votre douleur s'aggrave-t-elle lorsque vous vous penchez en avant ou en arrière ?,Ma douleur est à son comble lorsque je me penche en avant.,0.1665,-0.0625,0.125,-0.25
+,Ma douleur est à son comble quand je me penche en arrière.,-0.1875,0.125,-0.0625,-0.05
+,Ma douleur est à peu près la même avec n'importe quel type de mouvement.,0,0,0,0
+Votre douleur s'aggrave-t-elle lorsque vous êtes assis ou debout ?,Ma douleur est toujours aggravée par la position assise.,0.1665,-0.0625,0.125,-0.05
+,Ma douleur est toujours aggravée par la position debout ou la marche.,-0.1875,0.125,-0.0625,0.25
