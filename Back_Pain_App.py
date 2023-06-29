@@ -129,7 +129,7 @@ def progress():
     plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0) # To get the legend out of the graph
     #plt.legend() # To let the legend be in the plot at the best place
     # Save the plot to a file
-    plot_filename="/Users/shrimali/RedFlagsBITS/static/img/progress_plot.png"
+    plot_filename="RedFlagsBITS/static/img/progress_plot.png"
     plt.savefig(plot_filename, bbox_inches = 'tight') #to prevent cropping any part of the graph
     return render_template('Progress.html', plot_filename="/static/img/progress_plot.png")
 
