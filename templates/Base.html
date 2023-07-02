@@ -1,14 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
+    
+<meta charset="UTF-8">
     <title>{{ gettext('Back Pain') }}</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <link rel="stylesheet" href="{{url_for('static', filename='css/Back_Pain_App.css')}}">
     <script type="text/javascript" src="{{url_for('static', filename='js/Back_Pain_App.js')}}"></script>
 
+    <!-- This Script is added to track the website usage -->
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-Q1LYKS933M"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-Q1LYKS933M");
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
 
 </head>
 <body>
