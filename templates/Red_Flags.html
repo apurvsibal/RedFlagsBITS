@@ -11,11 +11,11 @@
             <label for="{{ answer }}">{{ answer }}</label><br>
         {% endfor %}
         <button style="width:300px;" type="submit" class="default_button" id="submit_button" disabled>
-            Continue
+            {{ gettext('Continue') }}
         </button>
     </form>
 
-    <button style="width:300px;" class="default_button" onclick="hide_or_show_div('MoreInfo')">More Information</button><br>
+    <button style="width:300px;" class="default_button" onclick="hide_or_show_div('MoreInfo')">{{ gettext('More Information') }}</button><br>
     <div id="MoreInfo" style="display: none; border: black 2px solid">
         <p style="max-width: 500px;">{{ more_information }}</p>
     </div>
