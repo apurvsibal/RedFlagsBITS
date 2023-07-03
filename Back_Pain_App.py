@@ -3,19 +3,30 @@ Purpose:
     API for the application.
 """
 
-from flask import Flask, render_template, request, url_for, redirect
-# From flask import send_file, send_from_directory, abort
-# Import SQL
-import _sqlite3
-from datetime import date
 import matplotlib.pyplot as plt
 import pandas as pd
-# Import io
+import sqlite3
+
+from flask import Flask, render_template, request, url_for, flash, redirect, session
+import re
+# from flask import send_file, send_from_directory, abort
+# import io
 import os
-# From datetime import date
+from datetime import date, timedelta, datetime
+
 import model
 
+from flask_babel import Babel, gettext
+import constants
+
+from werkzeug.security import check_password_hash, generate_password_hash
+import secrets
+
+
+secret_key = secrets.token_hex(16)
 app = Flask(__name__)
+app.secret_key = secret_key
+
 path = str(os.path.dirname(os.path.abspath(__file__)))
 path = path.replace('\\', '/')
 app.config['files'] = path + '/temp/'
@@ -31,6 +42,13 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS symptoms(
     # add more tables if necessary
 db.commit() # Create "symptoms" table if not already created
 
+babel = Babel(app)
+app.config['LANGUAGES'] = {'en': 'English', 'es': 'Spanish', 'fr': 'French', 'hi':'Hindi','zh':'Chinese'}
+
+lang = 'en'
+def get_locale():
+    return constants.lang
+babel.init_app(app, locale_selector=get_locale)
 
 @app.route('/', methods=('GET', 'POST'))  # Route and accepted Methods
 @app.route('/index', methods=('GET', 'POST'))
@@ -38,25 +56,25 @@ def index():
     """
 
     """
-    header_1 = 'Red Flags'
-    header_2 = 'For Back Pain'
-    explanation = """
-    Some cases of back pain can be serious, and require immediate medical attention.
-    We are going to ask a few question to understand the nature of your pain.
-    """
-    return render_template('index.html', header_1=header_1, header_2=header_2, explanation=explanation)
+    if request.method == 'POST':
+        constants.lang = request.json.get('language')
+        print(constants.lang)
+        return f"You selected: {constants.lang}"
+    else:
+        header_1 = gettext('Red Flags')
+        header_2 = gettext('For Back Pain')
+        explanation = gettext('Some cases of back pain can be serious, and require immediate medical attention. We are going to ask a few question to understand the nature of your pain.')
+        return render_template('index.html', header_1=header_1, header_2=header_2, explanation=explanation)
+
 
 @app.route('/red_flags', methods=('GET', 'POST'))
 @app.route('/red_flags/<int:question_number>', methods=('GET', 'POST'))
 def red_flags_questionnaire(question_number: int = 0):
     num_question = 3
-    header_1 = 'Is your back pain associated with any of the following?'
-    if question_number and request.args.get('answer') == 'Yes':
-        header_1 = 'You need immediate care'
-        explanation = """
-            You answered 'Yes' to a question indicating you could be in need of emergency care. 
-            Use the map below to see some providers
-            """
+    header_1 = gettext('Is your back pain associated with any of the following?')
+    if question_number and request.args.get('answer') == gettext('Yes'):
+        header_1 = gettext('You need immediate care')
+        explanation = gettext("You answered 'Yes' to a question indicating you could be in need of emergency care. Use the map below to see some providers")
         map_link = 'https://goo.gl/maps/zKXs4iFKqaqDwfJy6'
         return render_template('immediate_care.html', header_1=header_1, explanation=explanation, map_link=map_link)
     elif not question_number:
@@ -65,7 +83,113 @@ def red_flags_questionnaire(question_number: int = 0):
         return redirect(url_for('mobile_msk_questionaire'))
     question, answers, more_information = model.get_red_flag_question(question_number)
     return render_template('Red_Flags.html', header_1=header_1, question=question, answers=answers,
-                           more_information=more_information, next_question_number=question_number+1)
+                           more_information=more_information, next_question_number=question_number + 1)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form.get("name")
+        email = request.form.get("email")
+        age = request.form.get("age")
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
+        # Error conditions
+        if not (name and email and age and username and password and confirm_password):
+            flash("Please fill in all the required fields.")
+            return render_template("register.html", name=name, email=email, age=age, username=username)
+
+        if len(password) < 8:
+            flash("Password must be at least 8 characters long.")
+            return render_template("register.html", name=name, email=email, age=age, username=username)
+
+        if password != confirm_password:
+            flash("Passwords do not match")
+            return render_template('register.html', name=name, email=email, age=age, username=username)
+
+        if not re.search(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$', password):
+            flash("Password must contain at least one letter, one number, and one special character")
+            return render_template('register.html', name=name, email=email, age=age, username=username)
+
+        if '@' not in email:
+            flash("Invalid email address")
+            return render_template('register.html', name=name, age=age, username=username)
+
+        conn = sqlite3.connect('users.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        if cursor.fetchone() is not None:
+            flash("Username already exists")
+            return render_template('register.html', name=name, email=email, age=age)
+
+        password_hash = generate_password_hash(password)
+        cursor.execute("INSERT INTO users (username, password, email, age, name) VALUES (?, ?, ?, ?, ?)",
+                       (username, password_hash, email, age, name))
+        conn.commit()
+        conn.close()
+        return redirect("https://sites.google.com/view/mobilemskdemo/home")
+
+    return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+        conn = sqlite3.connect('users.db')
+        cursor = conn.cursor()
+
+        if username and password:
+            cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+            rows = cursor.fetchall()
+            if rows:
+                stored_username = rows[0][1]
+                stored_password = rows[0][2]
+                login_attempts = rows[0][6]
+                lockout_end_time_str = rows[0][7]
+
+                current_time = datetime.now()
+                # Code for locking a user out after 3 failed password attempts
+                if lockout_end_time_str:
+                    lockout_end_time = datetime.fromisoformat(lockout_end_time_str)
+                    if current_time < lockout_end_time:
+                        time_left = (lockout_end_time - current_time).seconds
+                        flash(f"Account locked. Please try again after {time_left} seconds")
+                        conn.commit()
+                        conn.close()
+                        return redirect(url_for('login'))
+
+                if check_password_hash(stored_password, password) and stored_username == username:
+                    session['username'] = username
+                    # Reset login attempts upon successful login
+                    cursor.execute("UPDATE users SET login_attempts = 0, lockout_end_time = NULL WHERE username = ?", (username,))
+                    conn.commit()
+                    conn.close()
+                    return redirect("https://sites.google.com/view/mobilemskdemo/home")
+                else:
+                    login_attempts += 1
+                    if login_attempts >= 3:
+                        # Disables login for a minute, can be changed based on requirements
+                        lockout_duration = timedelta(minutes=1)
+                        lockout_end_time = current_time + lockout_duration
+                        cursor.execute("UPDATE users SET login_attempts = 0, lockout_end_time = ? WHERE username = ?", (lockout_end_time.isoformat(), username))
+                        flash("Too many failed login attempts. Your account is locked for 1 minute")
+                    else:
+                        cursor.execute("UPDATE users SET login_attempts = ? WHERE username = ?", (login_attempts, username))
+                        flash("Incorrect password")
+            else:
+                flash("Username doesn't exist")
+        else:
+            flash("Please enter your username and password")
+
+        conn.commit()
+        conn.close()
+        return redirect(url_for('login'))
+
+    return render_template('login.html')
 
 
 @app.route('/Questionaire', methods=('GET', 'POST'))
@@ -152,6 +276,7 @@ def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
     score = model.score_OSWENTRY(request.form)
     disability = model.get_disability_level_from_score(score)
     return render_template('OSWENTRY_Results.html', score=score, disability=disability)
+
 
 @app.route('/temp_placeholder', methods=('GET', 'POST'))
 def temp_placeholder():

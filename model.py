@@ -1,14 +1,28 @@
 from typing import Tuple
-
+from Back_Pain_App import get_locale
 import constants
 import csv
 import pandas as pd
 # import Excel as xl
 # import numpy as np
+def path(fil):
+    lang = constants.lang
+    if(lang is None):
+        lang='en'
+    print(lang)
+    qprofile = 'locales/' + lang + '/QuestionProfiles.csv'
+    osws = 'locales/' + lang + '/OSWESTRY_pain.csv'
+    rf = 'locales/' + lang + '/Moblie_MSK_Red_Flags.csv'
+    if(fil=='rf'):
+        return rf
+    if(fil=='osws'):
+        return osws
+    if(fil=='qprofile'):
+        return qprofile
 
 
 def get_red_flag_question(question_number: int) -> (str, Tuple[str], str):
-    df = pd.read_csv('Moblie_MSK_Red_Flags.csv')
+    df = pd.read_csv(path('rf'))
     row = list(df.iloc[question_number-1])
     question = row[0]
     answers = row[1:3]
@@ -19,7 +33,7 @@ def Get_Questions_And_Answers():  # -> (list[str], dict[list[str]])
     """
     Returns a list of questions and a dictionary with the question as the key and a list of answers as the value
     """
-    with open('QuestionProfiles.csv') as file:  # Opens the file with the questions and answers
+    with open(path('qprofile')) as file:  # Opens the file with the questions and answers
         reader = csv.reader(file)  # Creates a reader object
         current = None  # Initialize
         answers = {}  # Initialize
@@ -44,7 +58,7 @@ def diagnose(questions, answers):
         '4': 'https://docs.google.com/presentation/d/1r6Qr7hEGQztO4qXX8ogU0nRUVbbIv5dcyS0mZiAMGm0/edit?usp=sharing'
     }  # Dictionary with links the the google docs for each of the given links
     # Note if the links to the google docs change, we need to edit the Links dictionary!!
-    with open('QuestionProfiles.csv') as file:  # Open the question profile
+    with open(path('qprofile')) as file:  # Open the question profile
         reader = csv.reader(file)
         num_classes = 0  # Initialize the number of classes
         for line in reader:  # Count the number of classes
@@ -63,8 +77,9 @@ def diagnose(questions, answers):
     return links[profile]  # Return the link to the document containing information on the diagnosis
 
 
+
 def get_OSWENTRY_Questionnaire():
-    with open('OSWESTRY_pain.csv') as file:  # Opens the file with the questions and answers
+    with open(path('osws')) as file:  # Opens the file with the questions and answers
         reader = csv.reader(file)  # Creates a reader object
         questions = [row for i, row in enumerate(reader) if i]
     return questions
