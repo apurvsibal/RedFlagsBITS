@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Back Pain Symptom Assessment</title>
+</head>
+<body>
+    <h1>Back Pain Symptom Assessment</h1>
+    <form action="/" method="POST">
+        <label for="intensity">Intensity out of 10:</label>
+        <select id="intensity" name="intensity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select><br><br>
+
+        <label for="location">Location:</label>
+        <select id="location" name="location">
+            <option value="upper_back">Upper Back</option>
+            <option value="middle_back">Middle Back</option>
+            <option value="lower_back">Lower Back</option>
+            <option value="all">All</option>
+        </select><br><br>
+
+        <label for="duration">Duration:</label>
+        <select id="duration" name="duration">
+            <option value="less_than_1_week">Less than 1 week</option>
+            <option value="1_week_to_1_month">1 week to 1 month</option>
+            <option value="1_month_to_3_months">1 month to 3 months</option>
+            <option value="more_than_3_months">More than 3 months</option>
+        </select><br><br>
+
+        <label for="aggravating_factors">Aggravating Factors:</label>
+        <select id="aggravating_factors" name="aggravating_factors">
+            <option value="sitting_too_long">Sitting too long</option>
+            <option value="lifting_heavy_objects">Lifting heavy objects</option>
+            <option value="bending_or_twisting">Bending or twisting</option>
+            <option value="physical_activity">Physical activity</option>
+        </select><br><br>
+
+        <label for="alleviating_factors">Alleviating Factors:</label>
+        <select id="alleviating_factors" name="alleviating_factors">
+            <option value="resting">Resting</option>
+            <option value="applying_heat">Applying heat</option>
+            <option value="applying_cold">Applying cold</option>
+            <option value="taking_pain_medication">Taking pain medication</option>
+        </select><br><br>
+
+       <label for="other_symptoms">Other Symptoms:</label>
+        <input type="text" id="other_symptoms" name="other_symptoms"><br><br>
+
+        <label for="previous_treatment">Previous Treatment:</label>
+        <input type="text" id="previous_treatment" name="previous_treatment"><br><br>
+
+        <label for="additional_info">Additional Information:</label>
+        <input type="text" id="additional_info" name="additional_info"><br><br>
+
+         <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
