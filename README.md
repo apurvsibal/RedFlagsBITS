@@ -1,3 +1,6 @@
+#Note
+No login/signup has been created to create a "unique id" for each customer to add his particular data in the database. Currently, it shows ALL data. Need to add login/signup and change the database queries a bit.
+
 # Flask App Template
 
 A rough template to use to start creating a Flask Application
