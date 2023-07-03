@@ -7,7 +7,7 @@ import pandas as pd
 # import numpy as np
 
 
-def get_red_flag_question(question_number: int) -> (str, Tuple[str], str):
+def get_red_flag_question(question_number: int) -> (str, tuple[str], str):
     df = pd.read_csv('Moblie_MSK_Red_Flags.csv')
     row = list(df.iloc[question_number-1])
     question = row[0]

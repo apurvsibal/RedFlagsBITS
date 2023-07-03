@@ -13,9 +13,16 @@
         Restart
     </a>
     <span class="title">Back Pain</span>
-    <a class="home right_button" href="https://sites.google.com/view/mobilemskdemo/home">
-        Your Site
+    <a class="home left_button" style="margin-left: 2px;" href="{{ url_for('home')}}">
+        Forum
     </a>
+    <a class="home right_button" style="margin-right: 2px;" href="{{ url_for('register')}}">
+        Register
+    </a>
+    <a class="home right_button" style="margin-right: 2px;" href="{{ url_for('login')}}">
+        Login
+    </a>
+
 </nav>
 <div class="main"><br><br>
 {% block content %} {% endblock %}
