@@ -30,7 +30,7 @@ app.secret_key = secret_key
 path = str(os.path.dirname(os.path.abspath(__file__)))
 path = path.replace('\\', '/')
 app.config['files'] = path + '/temp/'
-db = _sqlite3.connect('backpain.db', check_same_thread=False) # Connect to database
+db = sqlite3.connect('backpain.db', check_same_thread=False) # Connect to database
 cursor = db.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS symptoms(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
