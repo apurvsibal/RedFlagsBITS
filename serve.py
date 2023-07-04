@@ -1,4 +1,4 @@
 import waitress
 import app
 
-waitress.serve(app.app, host='0.0.0.0', port=80)
+waitress.serve(app.app, host='0.0.0.0', port=8000)
