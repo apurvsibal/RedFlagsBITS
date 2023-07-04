@@ -268,11 +268,11 @@ def OSWENTRY_Low_Back_Pain_Questionaire():
     return render_template('OSWENTRY_questionnaire.html', questions=questions, post_URL=post_URL)
 
 @app.route('/diagnosis')
-def diagnosis():
+def diagnosis_information():
     """
 
     """
-    questions = model.get_diagnosis()
+    questions = model.get_diagnosis_information()
     post_URL = url_for('diagnosis_information')
     return render_template('diagnosis.html', questions=questions, post_URL=post_URL)
 
