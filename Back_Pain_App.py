@@ -267,6 +267,15 @@ def OSWENTRY_Low_Back_Pain_Questionaire():
     post_URL = url_for('OSWENTRY_Low_Back_Pain_Questionaire_evaluation')
     return render_template('OSWENTRY_questionnaire.html', questions=questions, post_URL=post_URL)
 
+@app.route('/diagnosis')
+def diagnosis():
+    """
+
+    """
+    questions = model.get_diagnosis()
+    post_URL = url_for('Diagnosis_information')
+    return render_template('diagnosis.html', questions=questions, post_URL=post_URL)
+
 
 @app.route('/OSWENTRY_Back_Pain', methods=['POST'])
 def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
