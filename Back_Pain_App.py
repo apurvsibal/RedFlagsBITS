@@ -272,9 +272,8 @@ def diagnosis_information():
     """
 
     """
-    questions = model.get_diagnosis()
     post_URL = url_for('diagnosis_information')
-    return render_template('diagnosis.html', questions=questions, post_URL=post_URL)
+    return render_template('diagnosis.html', post_URL=post_URL)
 
 @app.route("/Acute_Backpain")
 def Acute_Backpain():
