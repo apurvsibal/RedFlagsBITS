@@ -90,9 +90,8 @@ def get_OSWENTRY_Questionnaire():
 
 
 def get_diagnosis():
-    with open(path('di')) as file:  # Opens the file with the questions and answers
-        di = 'path/to/di.html'
-    return render_template(diagnosis.html)
+    html_file_path = 'path/to/diagnosis.html'
+    return render_template(html_file_path)
 
 def score_OSWENTRY(answers):
     questions = get_OSWENTRY_Questionnaire()
