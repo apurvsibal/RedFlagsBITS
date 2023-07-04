@@ -85,6 +85,12 @@ def get_OSWENTRY_Questionnaire():
     return questions
 
 
+def get_diagnosis():
+    with open(path('osws')) as file:  # Opens the file with the questions and answers
+        reader = csv.reader(file)  # Creates a reader object
+        questions = [row for i, row in enumerate(reader) if i]
+    return questions
+
 def score_OSWENTRY(answers):
     questions = get_OSWENTRY_Questionnaire()
     question_length = len(questions)
