@@ -267,40 +267,6 @@ def OSWENTRY_Low_Back_Pain_Questionaire():
     post_URL = url_for('OSWENTRY_Low_Back_Pain_Questionaire_evaluation')
     return render_template('OSWENTRY_questionnaire.html', questions=questions, post_URL=post_URL)
 
-@app.route('/diagnosis')
-def diagnosis_information():
-    """
-
-    """
-    questions = model.get_diagnosis()
-    post_URL = url_for('diagnosis_information')
-    return render_template('diagnosis.html', questions=questions, post_URL=post_URL)
-
-@app.route("/Acute_Backpain")
-def Acute_Backpain():
-
-    return render_template("Acute.html")
-
-@app.route("/Subacute_Backpain")
-def Subacute_Backpain():
-    return render_template("Subacute.html")
-
-@app.route("/Chronic_Backpain")
-def Chronic_Backpain():
-    return render_template("Chronic.html")
-
-@app.route("/Upper_Backpain")
-def Upper_Backpain():
-    return render_template("Upper.html")
-
-@app.route("/Middle_Backpain")
-def Middle_Backpain():
-    return render_template("Middle.html")
-
-
-@app.route("/Lower_Backpain")
-def Lower_Backpain():
-    return render_template("Lower.html")
 
 
 @app.route('/OSWENTRY_Back_Pain', methods=['POST'])
