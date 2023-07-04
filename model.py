@@ -91,9 +91,8 @@ def get_OSWENTRY_Questionnaire():
 
 def get_diagnosis():
     with open(path('di')) as file:  # Opens the file with the questions and answers
-        reader = csv.reader(file)  # Creates a reader object
-        questions = [row for i, row in enumerate(reader) if i]
-    return questions
+        di = 'path/to/di.html'
+    return render_template(diagnosis.html)
 
 def score_OSWENTRY(answers):
     questions = get_OSWENTRY_Questionnaire()
