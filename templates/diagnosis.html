@@ -5,12 +5,13 @@
     <title>Diagnosis</title>
 </head>
 <body>
-    <div class="container">
-        <form method="post" action="{{ post_URL }}">
+    <div style="display: flex; justify-content: center">
+    <form method="post" action="{{ post_URL }}">
+    {% for q in questions %}
+        <div style="text-align: left">
+            <h1>Diagnosis</h1>
 
-        <h1>Diagnosis</h1>
-
-        <div class="button-container">
+        
             <button onclick="window.location.href='/Acute_Backpain'">Acute Backpain</button>
             <button onclick="window.location.href='/Subacute_Backpain'">Subacute Backpain</button>
             <button onclick="window.location.href='/Chronic_Backpain'">Chronic Backpain</button>
