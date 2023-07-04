@@ -272,7 +272,7 @@ def diagnosis_information():
     """
 
     """
-    questions = model.get_diagnosis_information()
+    questions = model.get_diagnosis()
     post_URL = url_for('diagnosis_information')
     return render_template('diagnosis.html', questions=questions, post_URL=post_URL)
 
