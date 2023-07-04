@@ -13,7 +13,7 @@ def path(fil):
     qprofile = 'locales/' + lang + '/QuestionProfiles.csv'
     osws = 'locales/' + lang + '/OSWESTRY_pain.csv'
     rf = 'locales/' + lang + '/Moblie_MSK_Red_Flags.csv'
-    di = 'locales/' + lang + '/diagnosis.html'
+    di = 'locales/' + lang + '/diagnosis.csv'
 
     if(fil=='rf'):
         return rf
@@ -90,8 +90,10 @@ def get_OSWENTRY_Questionnaire():
 
 
 def get_diagnosis():
-    with open(path('di'), 'r') as file:  # Opens the HTML file
-        html_content = file.read()
+    with open(path('di')) as file:  # Opens the file with the questions and answers
+        reader = csv.reader(file)  # Creates a reader object
+        questions = [row for i, row in enumerate(reader) if i]
+    return questions
 
 def score_OSWENTRY(answers):
     questions = get_OSWENTRY_Questionnaire()
