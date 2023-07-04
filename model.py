@@ -13,7 +13,6 @@ def path(fil):
     qprofile = 'locales/' + lang + '/QuestionProfiles.csv'
     osws = 'locales/' + lang + '/OSWESTRY_pain.csv'
     rf = 'locales/' + lang + '/Moblie_MSK_Red_Flags.csv'
-    di = 'locales/' + lang + '/diagnosis.csv'
 
     if(fil=='rf'):
         return rf
@@ -21,8 +20,7 @@ def path(fil):
         return osws
     if(fil=='qprofile'):
         return qprofile
-    if(fil=='di'):
-        return di
+    
 
 
 def get_red_flag_question(question_number: int) -> (str, Tuple[str], str):
@@ -84,13 +82,6 @@ def diagnose(questions, answers):
 
 def get_OSWENTRY_Questionnaire():
     with open(path('osws')) as file:  # Opens the file with the questions and answers
-        reader = csv.reader(file)  # Creates a reader object
-        questions = [row for i, row in enumerate(reader) if i]
-    return questions
-
-
-def get_diagnosis():
-    with open(path('di')) as file:  # Opens the file with the questions and answers
         reader = csv.reader(file)  # Creates a reader object
         questions = [row for i, row in enumerate(reader) if i]
     return questions
