@@ -2,67 +2,48 @@
 @import "Squared.css";
 @import "autocomplete.css";
 
-
 /* Write CSS Specific to the Application Here */
 
-
 .dropdown {
-    position: absolute;
-    top: 25px;
-    right: 250px;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 170px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    flex-direction: column;
-}
-.dropdown-menu a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    white-space: nowrap; /* Prevent line breaks */
+.dropbtn {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: black;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
-.dropdown-menu a img {
-    margin-right: 10px; /* Adjust the spacing between the flag and text as needed */
-    height: 30px; /* Adjust the height of the flag image as needed */
-    vertical-align: middle; /* Vertically align the image within its container */
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
- .globe-icon {
-    font-size: 35px; /* Adjust the size as needed */
+.dropdown-content a:hover {
+  background-color: blue;
 }
 
-form input[type=text],
-form input[type=password],
-form input[type=number] {
-  background-color: #F0F0F0;
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
-.mandatory
-{
-   border: 1px solid #ced4da;
+.dropdown:hover .dropbtn {
+  background-color: black;
 }
-
-.mandatory:required
-{
-   border-color: red;
-}
-
-.login-body
-{
-  background-color: #F5F5F5;
-}
-
