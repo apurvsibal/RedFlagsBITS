@@ -13,17 +13,25 @@
         <a class="home left_button" href="{{ url_for('index')}}">
             Restart
         </a>
-        <span class="title">Back Pain</span>
-        <a class="home right_button" href="https://sites.google.com/view/mobilemskdemo/home">
+        <a class="home left_button" href="https://sites.google.com/view/mobilemskdemo/home">
             Your Site
         </a>
+        <a class="home left_button" href="{{url_for('forum')}}">
+            Forum
+        </a>
+        <span class="title">Back Pain</span>
+
+        <a class="home right_button" href="{{ url_for('register')}}">
+            Register/Login
+        </a>
+        
         <a class="home left_button" href="/medical_records">
             Medical record
         </a>
         <div class="dropdown">
             <button class="dropbtn">User Profile</button>
             <div class="dropdown-content">
-                <a href="/create_profile">Create Profile</a>
+                <a href='/create_profile'>Create Profile</a>
                 <a href="/update_profile">Update Profile</a>
                 <a href="/view_profile">View Profile</a>
             </div>

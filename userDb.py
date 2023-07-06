@@ -24,6 +24,18 @@ def initialize_database():
         )
     ''')
 
+    cursor.execute('PRAGMA encoding="UTF-8"')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS posts (
+            id INTEGER PRIMARY KEY,
+            title TEXT not null,
+            date_posted  DATE not null,
+            content TEXT not null,
+            username TEXT not null
+            
+        )
+    ''')
+
     conn.commit()
     conn.close()
 

@@ -21,11 +21,17 @@ import constants
 
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
+from flask_session import Session
+
 
 
 secret_key = secrets.token_hex(16)
 app = Flask(__name__)
 app.secret_key = secret_key
+
+app.config['SESSION_PERMANENT'] = True
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 path = str(os.path.dirname(os.path.abspath(__file__)))
 path = path.replace('\\', '/')
@@ -318,6 +324,44 @@ def temp_placeholder():
     return 'Temporary Placeholder'
 
 
+
+@app.route("/forum")
+def forum():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM posts ORDER BY date_posted DESC")
+    post = cursor.fetchall()
+    return render_template('forum.html', posts = post)
+
+
+@app.route('/create_posts', methods=['GET', 'POST'])
+def create_post():
+    if session['username']!= None:
+        if request.method == 'POST':
+            title = request.form.get("title")
+            date_posted = datetime.utcnow().strftime('%B %d %Y - %H:%M:%S')
+            username = session['username']
+            content = request.form.get("content")
+
+            # error check
+            if not (title and content):
+                flash("Please fill in all the required fields.")
+                return render_template("create_posts.html", title = title, content = content)
+            conn = sqlite3.connect('users.db')
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO posts (title, date_posted, content, username) VALUES (?, ?, ?, ?)",
+                       (title, date_posted, content, username))
+            conn.commit()
+            conn.close()
+            return redirect('forum')
+        
+        return render_template('create_posts.html')
+            
+
+    else:
+        return render_template('login.html')
+
+
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run(debug=True , port=8000)
 # I wonder if we need to designate the run env. ex. (debug=True, host='0.0.0.0')???
