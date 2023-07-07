@@ -95,6 +95,14 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
+        agreed_terms = request.form.get('terms_and_conditions')
+
+       
+        if not (agreed_terms):
+            # Checkbox is not checked, display an error message
+            flash("Please agree to the Terms and Conditions.")
+            return render_template('register.html', name=name, email=email, age=age, username=username, password=password, confirm_password=confirm_password)
+
 
         # Error conditions
         if not (name and email and age and username and password and confirm_password):
@@ -132,6 +140,12 @@ def register():
         return redirect("https://sites.google.com/view/mobilemskdemo/home")
 
     return render_template('register.html')
+
+# Route for terms and conditions page
+@app.route('/terms_and_conditions')
+def terms_and_conditions():
+    
+    return render_template('terms_and_conditions.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -213,7 +227,7 @@ def mobile_msk_questionaire():
         VALUES (?, ?, ?, ?, ?)''', (today, symptom_data[0], symptom_data[1], symptom_data[2], symptom_data[3]))
         db.commit() # Inserts symptoms of the patient into database
         return render_template('Diagnosis.html', questions=questions, answers=answers, diagnosis=diagnosis_URL)
-    terms_conditions_url = url_for('temp_placeholder')  # Sets the URL for the terms and conditions
+    terms_conditions_url = url_for('terms_and_conditions')  # Sets the URL for the terms and conditions
     return render_template('questionaire.html', questions=questions, answers=answers,
                            terms_conditions_url=terms_conditions_url)  # Display the questionnaire if
     # it has not been displayed yet
