@@ -103,6 +103,14 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
+        agreed_terms = request.form.get('terms_and_conditions')
+
+       
+        if not (agreed_terms):
+            # Checkbox is not checked, display an error message
+            flash("Please agree to the Terms and Conditions.")
+            return render_template('register.html', name=name, email=email, age=age, username=username, password=password, confirm_password=confirm_password)
+
 
         # Error conditions
         if not (name and email and age and username and password and confirm_password):
