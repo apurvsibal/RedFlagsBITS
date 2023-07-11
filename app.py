@@ -2,10 +2,18 @@
 Purpose:
     API for the application.
 """
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 import matplotlib.pyplot as plt
 import pandas as pd
 import sqlite3
+from flask_mail import Mail, Message
+from pyfcm import FCMNotification
+import schedule
+import time
+import asyncio
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session
 import re
@@ -171,7 +179,7 @@ def login():
                     lockout_end_time = datetime.fromisoformat(lockout_end_time_str)
                     if current_time < lockout_end_time:
                         time_left = (lockout_end_time - current_time).seconds
-                        flash(f"Account locked. Please try again after {time_left} seconds")
+                        flash(f"Account locked. Please try again after {time_left} seconds","error")
                         conn.commit()
                         conn.close()
                         return redirect(url_for('login'))
@@ -190,20 +198,125 @@ def login():
                         lockout_duration = timedelta(minutes=1)
                         lockout_end_time = current_time + lockout_duration
                         cursor.execute("UPDATE users SET login_attempts = 0, lockout_end_time = ? WHERE username = ?", (lockout_end_time.isoformat(), username))
-                        flash("Too many failed login attempts. Your account is locked for 1 minute")
+                        flash("Too many failed login attempts. Your account is locked for 1 minute","error")
                     else:
                         cursor.execute("UPDATE users SET login_attempts = ? WHERE username = ?", (login_attempts, username))
-                        flash("Incorrect password")
+                        flash("Incorrect password","error")
             else:
-                flash("Username doesn't exist")
+                flash("Username doesn't exist","error")
         else:
-            flash("Please enter your username and password")
+            flash("Please enter your username and password","error")
 
         conn.commit()
         conn.close()
         return redirect(url_for('login'))
 
     return render_template('login.html')
+
+def sendMail(toEmail, subject, content):
+    senderEmail = 'mobilemsk.admin@mobilemskdemo.com'
+    senderPassword = 'ueyyzeijcrjmzzvo'
+
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 587
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()
+    server.login(senderEmail, senderPassword)
+
+    email = MIMEMultipart()
+    email['From'] = senderEmail
+    email['To'] = toEmail
+    email['Subject'] = subject
+    email.attach(MIMEText(content, 'plain'))
+    server.send_message(email)
+    server.quit()
+    return 'Email sent successfully!'
+
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'GET':
+        return render_template('forgotpassword.html')
+    elif request.method == 'POST':
+        username = request.form.get("username")
+        if not username:
+            flash("Please enter a username","error")
+            return render_template('forgotpassword.html')
+        else:
+            conn = sqlite3.connect('users.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT email FROM users WHERE username = ?", (username,))
+            row = cursor.fetchone()
+            if row is not None:
+                email = row[0]
+                reset_token = secrets.token_urlsafe(32)
+                # Set a 10-minute period only during which the user ca use the reset link to change their password.
+                reset_timestamp = datetime.now() + timedelta(minutes=10)
+                cursor.execute("UPDATE users SET secret_key = ?, reset_timestamp = ? WHERE username = ?",
+                               (reset_token, reset_timestamp, username))
+                conn.commit()
+                conn.close()
+                reset_link = "https://redflagsmsk.azurewebsites.net/reset_password?token=" + reset_token
+                subject = "MobileMSK Password Reset Link"
+                content = f"Click the following link to reset your password: {reset_link}"
+                sendMail(email, subject, content)
+                flash("Password reset instructions sent to your email","success")
+            else:
+                flash("Username not found","error")
+            return render_template('forgotpassword.html')
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'GET':
+        urlToken = request.args.get('token')
+        if not urlToken:
+            flash("Invalid reset token","error")
+            return render_template('forgotpassword.html')
+        return render_template('reset_password.html', token=urlToken)
+    elif request.method == 'POST':
+        urlToken = request.form.get("token")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+        if not password:
+            flash("Please enter a new password","error")
+            return render_template('reset_password.html', token=urlToken)
+        elif not confirm_password:
+            flash("Please fill in all the inputs","error")
+            return render_template('reset_password.html', token=urlToken)
+        elif len(password) < 8:
+            flash("Password must be at least 8 characters long.","error")
+            return render_template("reset_password.html", token=urlToken)
+        elif not re.search(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$', password):
+            flash("Password must contain at least one letter, one number, and one special character","error")
+            return render_template('reset_password.html', token=urlToken)
+        elif password != confirm_password:
+            flash("Please make sure the passwords match","error")
+            return render_template('reset_password.html', token=urlToken)
+        else:
+            password_hash = generate_password_hash(password)
+            conn = sqlite3.connect('users.db')
+            cursor = conn.cursor()
+            cursor.execute("SELECT username, reset_timestamp FROM users WHERE secret_key = ?", (urlToken,))
+            row = cursor.fetchone()
+            if row is not None:
+                username, reset_timestamp = row
+                reset_timestamp = datetime.strptime(reset_timestamp, "%Y-%m-%d %H:%M:%S.%f")
+                current_timestamp = datetime.now()
+                if current_timestamp < reset_timestamp:
+                    cursor.execute("UPDATE users SET password = ?, secret_key = NULL, reset_timestamp = NULL WHERE "
+                                   "username = ?",
+                                   (password_hash, username))
+                    conn.commit()
+                    conn.close()
+                    flash("Password reset successful. You can now log in with your new password.","success")
+                    return render_template('login.html')
+                else:
+                    flash("The password reset link has expired.","error")
+                    return render_template('forgotpassword.html')
+            else:
+                flash("Error while resetting password","error")
+                return render_template('forgotpassword.html')
 
 
 @app.route('/Questionaire', methods=('GET', 'POST'))
@@ -325,6 +438,53 @@ def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
     score = model.score_OSWENTRY(request.form)
     disability = model.get_disability_level_from_score(score)
     return render_template('OSWENTRY_Results.html', score=score, disability=disability)
+
+# # Implementing the appointment reminder email
+@app.route('/schedule-appointment', methods=('POST', 'GET'))
+def schedule_appointment():
+    if request.method == 'POST':
+        appointment_details = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'date': request.form.get('date'),
+            'time': request.form.get('time')
+        }
+
+        scheduled_time = request.form.get('time')
+
+        print(appointment_details)
+
+        async def send_email_reminder(appointment_details):
+            subject = 'Appointment Reminder'
+            body = f"Dear {appointment_details['name']}, your appointment is scheduled for {appointment_details['date']} at {appointment_details['time']}."
+
+            msg = Message(subject=subject, body=body, recipients=[appointment_details['email']])
+            mail.send(msg)
+
+        def send_email_wrapper():
+            asyncio.ensure_future(send_email_reminder(appointment_details))
+            
+
+        async def schedule_email(appointment_details, scheduled_time):
+            schedule.every().day.at(scheduled_time).do(send_email_wrapper)
+
+            while True:
+                schedule.run_pending()
+                await asyncio.sleep(1)
+
+        async def main():
+            await schedule_email(appointment_details, scheduled_time)
+            return 'Appointment scheduled successfully'
+
+        # Create and run the event loop
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(main())
+
+    else:
+        # I have created a schedule appointment page just for my code to work. This task is assigned to Shashwat. So this section will be his code.
+        return render_template('schedule-appointment.html')
+
 
 
 @app.route('/temp_placeholder', methods=('GET', 'POST'))
