@@ -2,27 +2,14 @@
 <html>
 <head>
     <title>Symptom Checker</title>
-    <!-- Add Bootstrap CSS link -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>Symptom Checker</h1>
-        
-        <form action="/diagnosis" method="post">
-            <div class="form-group">
-                <label for="symptoms">Enter your symptoms:</label>
-                <textarea class="form-control" id="symptoms" name="symptoms" rows="4" required></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Check Symptoms</button>
-        </form>
-    </div>
-
-    <!-- Add Bootstrap JS and jQuery scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <h1>Symptom Checker</h1>
+    <form action="/symptom-checker" method="POST">
+        <label for="symptoms">Enter your symptoms (separated by commas):</label>
+        <input type="text" name="symptoms" id="symptoms" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
-
