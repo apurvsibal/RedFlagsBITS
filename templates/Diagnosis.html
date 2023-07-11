@@ -4,22 +4,22 @@
 
     <strong style="font-size:30px;">
       <br>
-        {{ gettext('Our quiz identified solutions for your pain.') }}
+        {{ translate_text('Our quiz identified solutions for your pain.') }}
     <br>
     </strong>  <br><br><br>
 
-    <a href="{{ diagnosis }}">{{ gettext('Please use this link to learn more.') }}</a>
+    <a href="{{ diagnosis }}">{{ translate_text('Please use this link to learn more.') }}</a>
 
     <br><br>
 
-    <a href="{{ url_for('OSWENTRY_Low_Back_Pain_Questionaire') }}">{{ gettext('Link to OSWENTRY Questionnaire') }}</a>
+    <a href="{{ url_for('OSWENTRY_Low_Back_Pain_Questionaire') }}">{{ translate_text('Link to OSWENTRY Questionnaire') }}</a>
 
     <br><br>
 
-    <a href="{{ url_for('diagnosis_information') }}">{{ gettext('Link to Diagnosis Information') }}</a>
+    <a href="{{ url_for('diagnosis_information') }}">{{ translate_text('Link to Diagnosis Information') }}</a>
 
     <br><br>
 
-    <a href="/Progress">Link to track your symptom progres.</a>
+    <a href="/Progress">{{ translate_text('Link to track your symptom progres.') }}</a>
 
 {% endblock %}

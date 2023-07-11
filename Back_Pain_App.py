@@ -16,12 +16,20 @@ from datetime import date, timedelta, datetime
 
 import model
 
-from flask_babel import Babel, gettext
 import constants
 
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
 
+import jinja2
+import requests
+import os
+import uuid
+import json
+from dotenv import load_dotenv
+load_dotenv()
+import csv
+from translatecsv import csvTranslate
 
 secret_key = secrets.token_hex(16)
 app = Flask(__name__)
@@ -42,13 +50,59 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS symptoms(
     # add more tables if necessary
 db.commit() # Create "symptoms" table if not already created
 
-babel = Babel(app)
-app.config['LANGUAGES'] = {'en': 'English', 'es': 'Spanish', 'fr': 'French', 'hi':'Hindi','zh':'Chinese'}
+# Load the values from .env
+key = os.environ['KEY']
+endpoint = os.environ['ENDPOINT']
+location = os.environ['LOCATION']
+# Translation function
+def translate_text(original_text):
 
-lang = 'en'
-def get_locale():
-    return constants.lang
-babel.init_app(app, locale_selector=get_locale)
+    # Indicate that we want to translate and the API
+    # version (3.0) and the target language
+    path = '/translate?api-version=3.0'
+    
+    # Add the target language parameter
+    target_language_parameter = '&to=' + constants.lang
+    
+    # Create the full URL
+    constructed_url = endpoint + path + target_language_parameter
+
+    # Set up the header information, which includes our
+    # subscription key
+    headers = {
+        'Ocp-Apim-Subscription-Key': key,
+        'Ocp-Apim-Subscription-Region': location,
+        'Content-type': 'application/json',
+        'X-ClientTraceId': str(uuid.uuid4())
+    }
+
+    # Create the body of the request with the text to be translated
+    body = [{'text': original_text}]
+
+    # Make the call using post
+    translator_request = requests.post(
+        constructed_url, headers=headers, json=body)
+    
+    # Retrieve the JSON response
+    translator_response = translator_request.json()
+    print(translator_response)
+    print('....................................')
+    
+    # Retrieve the translation
+    translated_text = translator_response[0]['translations'][0]['text']
+
+    return translated_text
+
+app.jinja_env.globals['translate_text'] = translate_text
+
+##### WE TRANSLATE THE CSV FILES ONLY IF ANY CHANGES ARE MADE TO THEM
+files = ['Moblie_MSK_Red_Flags.csv','OSWESTRY_pain.csv','QuestionProfiles.csv']
+for file in files:
+    if(os.path.getmtime('./locales/hi/' + file) < os.path.getmtime('./locales/en/' + file)):
+            csvTranslate(file)
+            print('True__________________________________________')
+    else:
+        print('False_____________________________________________')
 
 @app.route('/', methods=('GET', 'POST'))  # Route and accepted Methods
 @app.route('/index', methods=('GET', 'POST'))
@@ -58,12 +112,11 @@ def index():
     """
     if request.method == 'POST':
         constants.lang = request.json.get('language')
-        print(constants.lang)
         return f"You selected: {constants.lang}"
     else:
-        header_1 = gettext('Red Flags')
-        header_2 = gettext('For Back Pain')
-        explanation = gettext('Some cases of back pain can be serious, and require immediate medical attention. We are going to ask a few question to understand the nature of your pain.')
+        header_1 = translate_text('Red Flags')
+        header_2 = translate_text('For Back Pain')
+        explanation = translate_text('Some cases of back pain can be serious, and require immediate medical attention. We are going to ask a few question to understand the nature of your pain.')
         return render_template('index.html', header_1=header_1, header_2=header_2, explanation=explanation)
 
 
@@ -71,10 +124,10 @@ def index():
 @app.route('/red_flags/<int:question_number>', methods=('GET', 'POST'))
 def red_flags_questionnaire(question_number: int = 0):
     num_question = 3
-    header_1 = gettext('Is your back pain associated with any of the following?')
-    if question_number and request.args.get('answer') == gettext('Yes'):
-        header_1 = gettext('You need immediate care')
-        explanation = gettext("You answered 'Yes' to a question indicating you could be in need of emergency care. Use the map below to see some providers")
+    header_1 = translate_text('Is your back pain associated with any of the following?')
+    if question_number and request.args.get('answer') == translate_text('Yes'):
+        header_1 = translate_text('You need immediate care')
+        explanation = translate_text("You answered 'Yes' to a question indicating you could be in need of emergency care. Use the map below to see some providers")
         map_link = 'https://goo.gl/maps/zKXs4iFKqaqDwfJy6'
         return render_template('immediate_care.html', header_1=header_1, explanation=explanation, map_link=map_link)
     elif not question_number:
@@ -98,11 +151,11 @@ def register():
 
         # Error conditions
         if not (name and email and age and username and password and confirm_password):
-            flash("Please fill in all the required fields.")
+            flash(translate_text("Please fill in all the required fields."))
             return render_template("register.html", name=name, email=email, age=age, username=username)
 
         if len(password) < 8:
-            flash("Password must be at least 8 characters long.")
+            flash(translate_text("Password must be at least 8 characters long."))
             return render_template("register.html", name=name, email=email, age=age, username=username)
 
         if password != confirm_password:
