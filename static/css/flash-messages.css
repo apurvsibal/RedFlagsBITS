@@ -22,10 +22,6 @@
   background-color: #e74c3c;
 }
 
-.flash-success {
-  background-color: #4CAF50;
-}
-
 .container {
   display: flex;
   justify-content: center;
