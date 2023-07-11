@@ -1,25 +1,7 @@
 {% extends 'Base.html' %}
 
 {% block content %}
-
-    <strong style="font-size:30px;">
-      <br>
-        {{ gettext('Our quiz identified solutions for your pain.') }}
-    <br>
-    </strong>  <br><br><br>
-
-    <a href="{{ diagnosis }}">{{ gettext('Please use this link to learn more.') }}</a>
-
-    <br><br>
-
-    <a href="{{ url_for('OSWENTRY_Low_Back_Pain_Questionaire') }}">{{ gettext('Link to OSWENTRY Questionnaire') }}</a>
-
-    <br><br>
-
-    <a href="{{ url_for('diagnosis_information') }}">{{ gettext('Link to Diagnosis Information') }}</a>
-
-    <br><br>
-
-    <a href="/Progress">Link to track your symptom progres.</a>
+    <h2>{{ header_1}}</h2>
+    
 
 {% endblock %}
