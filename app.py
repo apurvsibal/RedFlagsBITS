@@ -363,5 +363,5 @@ def create_post():
 
 
 if __name__ == '__main__':
-    app.run(debug=True , port=8000)
+    app.run( port=8000)
 # I wonder if we need to designate the run env. ex. (debug=True, host='0.0.0.0')???
