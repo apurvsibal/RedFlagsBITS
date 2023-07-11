@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resources</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/Back_Pain_App.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/flash-messages.css')}}">
+</head>
+{% block content %}
+    <nav class="navbar">
+        <span class="title">Back Pain</span>
+    </nav>
+    <div class="form-container">
+            <h1>Resources</h1><br>
+            <form action="/resources" method="post">
+                <div style="display: inline-block">
+                    <p style="max-width: 500px;">{{ explanation }}</p>
+                </div>
+                <div>
+                    <button class="default_button" type="submit" style="width:100px;">Search</button>
+                </div>
+            </form>
+    </div>
+{% endblock %}
+</html>
