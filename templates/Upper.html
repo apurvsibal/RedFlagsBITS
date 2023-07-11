@@ -1,35 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'Base.html' %}
+
+{% block content %}
+    <div style="display: flex; justify-content: center">
+    <form method="post" action="{{ post_URL }}">
+        <div style="text-align: left">
     <title>Upper Back Pain</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f2f2f2;
-        }
 
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-top: 30px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        p {
-            color: #666;
-            line-height: 1.5;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -69,4 +45,8 @@
     </div>
 </body>
 </html>
+
+</form>
+</div>
+{% endblock %}
 
