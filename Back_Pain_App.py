@@ -191,7 +191,6 @@ def login():
 
     return render_template('login.html')
 
-
 @app.route('/Questionaire', methods=('GET', 'POST'))
 def mobile_msk_questionaire():
     """
@@ -278,6 +277,53 @@ def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
     score = model.score_OSWENTRY(request.form)
     disability = model.get_disability_level_from_score(score)
     return render_template('OSWENTRY_Results.html', score=score, disability=disability)
+
+# # Implementing the appointment reminder email
+@app.route('/schedule-appointment', methods=('POST', 'GET'))
+def schedule_appointment():
+    if request.method == 'POST':
+        appointment_details = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'date': request.form.get('date'),
+            'time': request.form.get('time')
+        }
+
+        scheduled_time = request.form.get('time')
+
+        print(appointment_details)
+
+        async def send_email_reminder(appointment_details):
+            subject = 'Appointment Reminder'
+            body = f"Dear {appointment_details['name']}, your appointment is scheduled for {appointment_details['date']} at {appointment_details['time']}."
+
+            msg = Message(subject=subject, body=body, recipients=[appointment_details['email']])
+            mail.send(msg)
+
+        def send_email_wrapper():
+            asyncio.ensure_future(send_email_reminder(appointment_details))
+            
+
+        async def schedule_email(appointment_details, scheduled_time):
+            schedule.every().day.at(scheduled_time).do(send_email_wrapper)
+
+            while True:
+                schedule.run_pending()
+                await asyncio.sleep(1)
+
+        async def main():
+            await schedule_email(appointment_details, scheduled_time)
+            return 'Appointment scheduled successfully'
+
+        # Create and run the event loop
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(main())
+
+    else:
+        # I have created a schedule appointment page just for my code to work. This task is assigned to Shashwat. So this section will be his code.
+        return render_template('schedule-appointment.html')
+
 
 
 @app.route('/temp_placeholder', methods=('GET', 'POST'))
