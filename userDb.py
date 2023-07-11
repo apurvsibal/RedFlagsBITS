@@ -20,7 +20,9 @@ def initialize_database():
             age INTEGER not null,
             name TEXT not null,
             login_attempts INTEGER DEFAULT 0,
-            lockout_end_time TIMESTAMP
+            lockout_end_time TIMESTAMP,
+            secret_key TEXT,
+            reset_timestamp TIMESTAMP
         )
     ''')
 
