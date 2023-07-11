@@ -191,7 +191,6 @@ def login():
 
     return render_template('login.html')
 
-
 @app.route('/Questionaire', methods=('GET', 'POST'))
 def mobile_msk_questionaire():
     """
