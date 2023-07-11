@@ -9,13 +9,13 @@
 </head>
 {% block content %}
     <nav class="navbar">
-        <a class="home left_button" href="{{ url_for('index')}}">Restart</a>
-        <span class="title">Back Pain</span>
-        <a class="home right_button" href="{{ url_for('register')}}">Register</a>
+        <a class="home left_button" href="{{ url_for('index')}}">{{ translate_text('Restart') }}</a>
+        <span class="title">{{ translate_text('Back Pain') }}</span>
+        <a class="home right_button" href="{{ url_for('register')}}">{{ translate_text('Register') }}</a>
     </nav>
     <div class="form-container">
         <div class="form-main">
-            <h1>Log In</h1><br>
+            <h1>{{ translate_text('Log In') }}</h1><br>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <ul class="flash-messages">
@@ -33,7 +33,7 @@
                     <input autocomplete="off" autofocus class="form-control mx-auto w-auto mandatory" id="password" name="password" placeholder="Password" type="password">
                 </div>
                 <div>
-                    <button class="default_button" type="submit" style="width:100px;">Log In</button>
+                    <button class="default_button" type="submit" style="width:100px;">{{ translate_text('Log In') }}</button>
                 </div>
             </form>
         </div>

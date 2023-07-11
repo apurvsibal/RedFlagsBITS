@@ -1,5 +1,4 @@
 from typing import Tuple
-from Back_Pain_App import get_locale
 import constants
 import csv
 import pandas as pd
