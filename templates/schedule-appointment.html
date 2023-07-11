@@ -1,0 +1,19 @@
+{% extends 'Base.html' %} {% block content %}
+<div style="display: flex; justify-content: center">
+    <form method="post" action="/schedule-appointment">
+      <input name="name" placeholder="Name" type="text"></input>
+      <input name="email" placeholder="Email" type="email"></input>
+      <input name="date" placeholder="Date" type="date"></input>
+      <input name="time" placeholder="Time" type="time"></input>
+
+        <button
+            style="width: 300px"
+            type="submit"
+            class="default_button"
+            id="submit_button"
+        >
+            Submit
+        </button>
+    </form>
+</div>
+{% endblock %}
