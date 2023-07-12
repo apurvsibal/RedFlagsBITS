@@ -1,0 +1,25 @@
+{% extends 'Base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diagnosis</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: center">
+    <form method="post" action="{{ post_URL }}">
+        <div style="text-align: left">
+            <h1>Diagnosis</h1>
+
+
+            <button onclick="window.location.href='/Acute_Backpain'">Acute Backpain</button>
+            <button onclick="window.location.href='/Subacute_Backpain'">Subacute Backpain</button>
+            <button onclick="window.location.href='/Chronic_Backpain'">Chronic Backpain</button>
+            <button onclick="window.location.href='/Upper_Backpain'">Upper Backpain</button>
+            <button onclick="window.location.href='/Middle_Backpain'">Middle Backpain</button>
+            <button onclick="window.location.href='/Lower_Backpain'">Lower Backpain</button>
+        </div>
+    </div>
+</body>
+</html>
+
+

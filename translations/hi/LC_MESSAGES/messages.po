@@ -1,0 +1,136 @@
+# Hindi translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-06-21 13:41+0530\n"
+"PO-Revision-Date: 2023-06-21 13:47+0530\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: hi\n"
+"Language-Team: hi <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: Back_Pain_App.py:37
+msgid "Red Flags"
+msgstr "रेड फ़्लैग"
+
+#: Back_Pain_App.py:38
+msgid "For Back Pain"
+msgstr "कमर दर्द के लिए"
+
+#: Back_Pain_App.py:39
+msgid ""
+"Some cases of back pain can be serious, and require immediate medical "
+"attention. We are going to ask a few question to understand the nature of"
+" your pain."
+msgstr ""
+"पीठ दर्द के कुछ मामले गंभीर हो सकते हैं और तत्काल चिकित्सा की आवश्यकता "
+"होती है। हम आपके दर्द की प्रकृति को समझने के लिए कुछ प्रश्न पूछने जा रहे "
+"हैं।"
+
+#: Back_Pain_App.py:46
+msgid "Is your back pain associated with any of the following?"
+msgstr "क्या आपका पीठ दर्द निम्न में से किसी से जुड़ा है?"
+
+#: Back_Pain_App.py:47
+msgid "Yes"
+msgstr "हाँ"
+
+#: Back_Pain_App.py:48
+msgid "You need immediate care"
+msgstr "आपको तत्काल देखभाल की जरूरत है"
+
+#: Back_Pain_App.py:49
+msgid ""
+"You answered 'Yes' to a question indicating you could be in need of "
+"emergency care. Use the map below to see some providers"
+msgstr ""
+"आपने उस प्रश्न का उत्तर 'हां' में दिया है जो इंगित करता है कि आपको "
+"आपातकालीन देखभाल की आवश्यकता हो सकती है। कुछ प्रदाताओं को देखने के लिए "
+"नीचे दिए गए मानचित्र का उपयोग करें"
+
+#: templates/Base.html:6 templates/Base.html:15
+msgid "Back Pain"
+msgstr "पीठ दर्द"
+
+#: templates/Base.html:13
+msgid "Restart"
+msgstr "पुनः आरंभ करें"
+
+#: templates/Base.html:17
+msgid "Your Site"
+msgstr "आपकी साइट"
+
+#: templates/Diagnosis.html:7
+msgid "Our quiz identified solutions for your pain."
+msgstr "हमारे प्रश्नोत्तरी ने आपके दर्द के समाधान की पहचान की।"
+
+#: templates/Diagnosis.html:11
+msgid "Please use this link to learn more."
+msgstr "अधिक जानने के लिए कृपया इस लिंक का उपयोग करें।"
+
+#: templates/Diagnosis.html:15
+msgid "Link to OSWENTRY Questionnaire"
+msgstr "OSWENTRY प्रश्नावली का लिंक"
+
+#: templates/OSWENTRY_Results.html:6
+msgid "Thank you for using MobileMSK!"
+msgstr "MobileMSK का उपयोग करने के लिए धन्यवाद!"
+
+#: templates/OSWENTRY_Results.html:8
+msgid ""
+"Is there anything you would like to share with us to prepare for your "
+"appointment?"
+msgstr ""
+"क्या ऐसा कुछ है जो आप अपनी नियुक्ति की तैयारी के लिए हमारे साथ साझा करना "
+"चाहेंगे?"
+
+#: templates/OSWENTRY_Results.html:11 templates/OSWENTRY_questionnaire.html:15
+#: templates/questionaire.html:23
+msgid "Submit"
+msgstr "जमा करना"
+
+#: templates/OSWENTRY_Results.html:16
+msgid "References:"
+msgstr "संदर्भ:"
+
+#: templates/OSWENTRY_Results.html:18
+msgid ""
+"Fairbank JC, Pynsent PB. “The Oswestry Disability Index.” Spine 2000: "
+"25(22):2940-2952"
+msgstr ""
+"फेयरबैंक जेसी, पिंसेंट पीबी। 'ओस्वेस्ट्री विकलांगता सूचकांक।' स्पाइन "
+"2000: 25(22):2940-2952"
+
+#: templates/OSWENTRY_Results.html:19
+msgid ""
+"Fairbank JCT, Couper J, Davies JB. “The Oswestry Low Back Pain "
+"Questionnaire.” Physiotherapy 1980; 66:271-273"
+msgstr ""
+"फेयरबैंक जेसीटी, कूपर जे, डेविस जेबी। 'ओस्वेस्ट्री लो बैक पेन "
+"प्रश्नावली।' फिजियोथेरेपी 1980; 66:271-273"
+
+#: templates/Red_Flags.html:14 templates/index.html:11
+msgid "Continue"
+msgstr "जारी रखें"
+
+#: templates/Red_Flags.html:18
+msgid "More Information"
+msgstr "अधिक जानकारी"
+
+#: templates/questionaire.html:19
+msgid "I agree to"
+msgstr "मैं इसके लिए सहमत हूं"
+
+#: templates/questionaire.html:19
+msgid "Terms & Conditions"
+msgstr "नियम एवं शर्तें"
+
