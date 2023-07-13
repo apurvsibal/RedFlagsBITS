@@ -14,13 +14,16 @@
     <div class="form-container">
             <h1>Resources</h1><br>
             <form action="/resources" method="post">
-                <div style="display: inline-block">
-                    <p style="max-width: 500px;">{{ explanation }}</p>
+                <div>
+                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto mandatory" id="name" name="name" placeholder="Diagnosed Condition" type="text" value="{{ Diagnosed Condition }}">
                 </div>
                 <div>
                     <button class="default_button" type="submit" style="width:100px;">Search</button>
                 </div>
             </form>
+            <div style="display: inline-block">
+                <p style="max-width: 500px;">{{ explanation }}</p>
+            </div>
     </div>
 {% endblock %}
 </html>
