@@ -1,0 +1,12 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+
+<a  class="home left_button" style="width: 200px; margin-left: 10%;" class="default_button" href="{{ url_for('fbformFunc')}}">
+    Physicians Feedback
+</a>
+<a  class="home left_button" style="width: 200px;" href="{{ url_for('feedback')}}">
+    Patient Feedback
+</a>
+
+{% endblock %}

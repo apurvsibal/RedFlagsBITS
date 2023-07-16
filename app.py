@@ -199,6 +199,7 @@ def mobile_msk_questionaire():
     when the user fills it out and sends back the answers to the questions via a post request, the answers are used to
     diagnose the user.
     """
+    print("Ques called = ,",request.method)
     questions, answers = model.Get_Questions_And_Answers()  # Gets the questions and possible answers that will be used
     # To diagnose the patient.
     if request.method == 'POST':  # If the user has already filled out the questionnaire
@@ -343,6 +344,11 @@ def feedbackpage():
 		
 		
 		return redirect(url_for('feedback'))
+
+@app.route("/choice",methods=['GET','POST'])
+def choice():
+    print("choice called..")
+    return render_template("choice.html")
 
 @app.route("/viewfeedback",methods=['GET','POST'])
 def viewfeedback():	
