@@ -19,6 +19,14 @@ import model
 from flask_babel import Babel, gettext
 import constants
 
+import warnings
+warnings.filterwarnings('ignore')
+
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+from langchain.chains import LLMChain
+from langchain.chains import SimpleSequentialChain
+
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
 
@@ -26,6 +34,8 @@ import secrets
 secret_key = secrets.token_hex(16)
 app = Flask(__name__)
 app.secret_key = secret_key
+
+os.environ["OPENAI_API_KEY"] = "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"
 
 path = str(os.path.dirname(os.path.abspath(__file__)))
 path = path.replace('\\', '/')
@@ -311,6 +321,29 @@ def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
     score = model.score_OSWENTRY(request.form)
     disability = model.get_disability_level_from_score(score)
     return render_template('OSWENTRY_Results.html', score=score, disability=disability)
+
+
+@app.route('/resources', methods=('GET', 'POST'))
+def resources():
+    """
+
+    """
+    name = request.form.get("name")
+
+    llm = ChatOpenAI(temperature=0.0)
+    first_prompt = ChatPromptTemplate.from_template(
+        "Offer links to external medical resources, such as reputable websites or articles, for users to learn more about{name} .\
+    Include trusted sources like medical journals, research papers, or established healthcare organizations."
+    )
+    chain_one = LLMChain(llm=llm, prompt=first_prompt)
+    second_prompt = ChatPromptTemplate.from_template(
+        "Extracts relevant information from {links} and help the person understand about their condition."
+    )
+    chain_two = LLMChain(llm=llm, prompt=second_prompt)
+    overall_simple_chain = SimpleSequentialChain(chains=[chain_one, chain_two], verbose=True)
+
+    explanation = overall_simple_chain.run(name)
+    return render_template('resources.html', explanation=explanation)
 
 
 @app.route('/temp_placeholder', methods=('GET', 'POST'))
