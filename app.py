@@ -6,6 +6,8 @@ Purpose:
 import matplotlib.pyplot as plt
 import pandas as pd
 import sqlite3
+import sys
+sys.path.append("./SymptomChecker")
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session
 import re
@@ -21,6 +23,8 @@ import constants
 
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
+
+from prediction import predict
 
 
 secret_key = secrets.token_hex(16)
@@ -132,7 +136,7 @@ def register():
         return redirect("https://sites.google.com/view/mobilemskdemo/home")
 
     return render_template('register.html')
-
+ 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -321,3 +325,7 @@ def temp_placeholder():
 if __name__ == '__main__':
     app.run(port=8000)
 # I wonder if we need to designate the run env. ex. (debug=True, host='0.0.0.0')???
+
+@app.route('/symptom_checker')
+def checkSymptoms(symptoms):
+    return predict(symptoms)
