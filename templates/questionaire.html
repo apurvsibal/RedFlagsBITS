@@ -14,13 +14,20 @@
         </div><br><br>
     {% endfor %}
 
-    <input type="checkbox" name="terms_and_conditions" id="terms_and_conditions" onClick="Toggle_Enable_Submit('submit_button')">
+    <input type="checkbox" name="terms_and_conditions" id="terms_and_conditions" onclick="Toggle_Enable_Submit('submit_button')">
     <label for="terms_and_conditions">
         {{ gettext('I agree to') }} <a href="{{ terms_conditions_url }}" target="_blank">{{ gettext('Terms & Conditions') }}</a>
     </label><br>
 
 
-    <button style="width: 300px;" type="submit" class="default_button" disabled id="submit_button">{{ gettext('Submit') }}</button>
+    <!-- <button style="width: 300px;" type="submit" class="default_button" disabled id="submit_button" onclick="location.href='http://localhost:8000/choice'" >{{ gettext('Submit') }}</button> -->
+    
+     <a  class="home left_button" style="width: 200px; margin-left: 10%;" class="default_button" href="{{ url_for('choice')}}">
+            Submit
+        </a>
+        <!-- <a  class="home left_button" style="width: 200px;" href="{{ url_for('feedback')}}">
+            Patient Feedback
+        </a> -->
     </form>
     </div>
     
