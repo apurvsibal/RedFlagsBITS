@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    <title>Forum - REDFLAGS</title>
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">REDFLAGS</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('forum') }}">Community Forum</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if session['username'] != None %}
+                <a class="nav-item nav-link" href="">New Post</a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li class="flash-message flash-error">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+          <div class="content-section">
+            <form method="POST" action="/create_posts">
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">New Post</legend>
+                    <div>
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto mandatory" id="title" name="title" placeholder="Title" type="text" value="{{ title }}">
+                    </div>
+                    <br>
+                    <div>
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto mandatory" id="content" name="content" placeholder="Your experiences" type="text" value="{{ content }}">
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="default_button" type="submit" style="width:100px;">Post</button>
+                </div>
+            </form>
+        </div>

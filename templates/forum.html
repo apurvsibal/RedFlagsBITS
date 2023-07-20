@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    <title>Forum - REDFLAGS</title>
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">REDFLAGS</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('forum') }}">Community Forum</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if session['username'] == None %}
+              
+                <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+              {% else %}
+              
+              <a class="nav-item nav-link" href="{{url_for('create_post')}}">New Post</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% for post in posts %}
+            <article class="media content-section">
+            
+            <div class="media-body">
+              
+              <button class = "button-1"style="float:right; background-color:#d81a1a;">Delete</button>
+              <button class = "button-1"style="float:right;">Update</button>
+                <div class="article-metadata" style="padding-bottom: 1vh;">
+                <a class="mr-2" href="">{{ post[4] }}</a>
+                <small class="text-muted">{{ post[2] }}</small>
+                </div>
+                <h2><a class="article-title" href="">{{ post[1] }}</a></h2>
+                <p class="article-content">{{ post[3] }}</p>
+            </div>
+            </article>
+          {% endfor %}
+        </div>
+        </div>
+      </div>
+    </main>
