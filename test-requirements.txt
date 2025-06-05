@@ -1,0 +1,4 @@
+# Test dependencies for front.html unit tests
+beautifulsoup4==4.12.2
+lxml==4.9.3
+html5lib==1.1
