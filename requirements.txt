@@ -9,3 +9,7 @@ Werkzeug==2.1.2
 flask_babel
 matplotlib
 pandas
+
+# Optional test dependencies (install with: pip install -r test-requirements.txt)
+# beautifulsoup4==4.12.2
+# lxml==4.9.3
