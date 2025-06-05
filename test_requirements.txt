@@ -1,0 +1,8 @@
+# Test requirements for langchain backpain notebook
+pytest>=7.0.0
+pytest-mock>=3.10.0
+pytest-cov>=4.0.0
+langchain>=0.0.200
+openai>=0.27.0
+python-dotenv>=1.0.0
+mock>=4.0.3
