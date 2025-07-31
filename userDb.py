@@ -16,11 +16,13 @@ def initialize_database():
             id INTEGER PRIMARY KEY,
             username TEXT not null,
             password TEXT not null,
-            email TEXT not null,
+            email TEXT not null unique,
             age INTEGER not null,
             name TEXT not null,
             login_attempts INTEGER DEFAULT 0,
-            lockout_end_time TIMESTAMP
+            lockout_end_time TIMESTAMP,
+            secret_key TEXT,
+            reset_timestamp TIMESTAMP
         )
     ''')
 
