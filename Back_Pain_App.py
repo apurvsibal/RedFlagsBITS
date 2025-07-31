@@ -30,17 +30,40 @@ app.secret_key = secret_key
 path = str(os.path.dirname(os.path.abspath(__file__)))
 path = path.replace('\\', '/')
 app.config['files'] = path + '/temp/'
+
 db = sqlite3.connect('backpain.db', check_same_thread=False) # Connect to database
 cursor = db.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS symptoms(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date DATE,
+    datetime_column TEXT,
     symptom1 TEXT,
     symptom2 TEXT,
     symptom3 TEXT,
     symptom4 TEXT);''')
-    # add more tables if necessary
+# also too include: username TEXT,
 db.commit() # Create "symptoms" table if not already created
+cursor.execute('''CREATE TABLE IF NOT EXISTS oswentry_individual(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datetime_column TEXT,
+    score1 INT,
+    score2 INT,
+    score3 INT,
+    score4 INT,
+    score5 INT,
+    score6 INT,
+    score7 INT,
+    score8 INT,
+    score9 INT,
+    score10 INT);''')
+# also too include: username TEXT,
+db.commit() # Create "oswentry_individual" table if not already created
+cursor.execute('''CREATE TABLE IF NOT EXISTS oswentry_total(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datetime_column TEXT,
+    score INT);''')
+# also too include: username TEXT,
+db.commit() # Create "oswentry_total" table if not already created
+db.close()
 
 babel = Babel(app)
 app.config['LANGUAGES'] = {'en': 'English', 'es': 'Spanish', 'fr': 'French', 'hi':'Hindi','zh':'Chinese'}
@@ -207,12 +230,15 @@ def mobile_msk_questionaire():
             answers[q] = request.form.get(q)  # Get the answer to the question q
             symptom_data.append(answers[q])  # Adds answer by patients into array
         diagnosis_URL = model.diagnose(questions, answers)  # Gets the diagnosis based on the answers to the questions
-        today = date.today().isoformat()
+        today = datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
+        db = sqlite3.connect('backpain.db', check_same_thread=False) # Connect to database
+        cursor = db.cursor()     
         cursor.execute('''
-        INSERT INTO symptoms (date, symptom1, symptom2, symptom3, symptom4)
+        INSERT INTO symptoms (datetime_column, symptom1, symptom2, symptom3, symptom4)
         VALUES (?, ?, ?, ?, ?)''', (today, symptom_data[0], symptom_data[1], symptom_data[2], symptom_data[3]))
         db.commit() # Inserts symptoms of the patient into database
-        return render_template('Diagnosis.html', questions=questions, answers=answers, diagnosis=diagnosis_URL)
+        db.close()
+        return render_template('diagnosis.html', questions=questions, answers=answers, diagnosis=diagnosis_URL)
     terms_conditions_url = url_for('temp_placeholder')  # Sets the URL for the terms and conditions
     return render_template('questionaire.html', questions=questions, answers=answers,
                            terms_conditions_url=terms_conditions_url)  # Display the questionnaire if
@@ -223,39 +249,192 @@ def mobile_msk_questionaire():
 def progress():
     # Query the symptom data from the database
     plt.switch_backend('Agg') # To avoid crashing the server while plotting the graph
-    cursor.execute('SELECT date, symptom1, symptom2, symptom3, symptom4 FROM symptoms')
-    rows = cursor.fetchall() # Fetches all data returned from above query
+    db = sqlite3.connect('backpain.db', check_same_thread=False) # Connect to database
+    cursor = db.cursor()  
+    # Query the Oswestry data from the database
+    cursor.execute('SELECT * FROM (SELECT datetime_column, score1, score2, score3, score4, score5, score6, score7, score8, score9, score10 FROM oswentry_individual ORDER BY datetime_column DESC LIMIT 6) ORDER BY datetime_column ASC')
+    # also too include: WHERE username = ?     - session['username']
+    oswentry_rows = cursor.fetchall() # Fetches Oswestry data
 
-    # Prepare the data for plotting
-    data = {
-        'Date': [row[0] for row in rows],
-        'Symptom1': [row[1] for row in rows],
-        'Symptom2': [row[2] for row in rows],
-        'Symptom3': [row[3] for row in rows],
-        'Symptom4': [row[4] for row in rows]
-        # Add more fields for other symptoms
+    # Query the Oswestry total data from the database
+    cursor.execute('SELECT * FROM (SELECT datetime_column, score FROM oswentry_total ORDER BY datetime_column DESC LIMIT 6) ORDER BY datetime_column ASC')
+    # also too include: WHERE username = ?     - session['username']
+    oswentry_total = cursor.fetchall() # Fetches Oswestry data
+    db.close()
+    # Prepare the Oswestry individual data for plotting
+    oswentry_individual_data = {
+        'Date': [row[0] for row in oswentry_rows],
+        'Score1': [row[1] for row in oswentry_rows],
+        'Score2': [row[2] for row in oswentry_rows],
+        'Score3': [row[3] for row in oswentry_rows],
+        'Score4': [row[4] for row in oswentry_rows],
+        'Score5': [row[5] for row in oswentry_rows],
+        'Score6': [row[6] for row in oswentry_rows],
+        'Score7': [row[7] for row in oswentry_rows],
+        'Score8': [row[8] for row in oswentry_rows],
+        'Score9': [row[9] for row in oswentry_rows],
+        'Score10': [row[10] for row in oswentry_rows]
     }
-    df = pd.DataFrame(data)
+    oswentry_individual_df = pd.DataFrame(oswentry_individual_data)
 
-    # Create the charts or graphs
-    plt.figure(figsize=(6, 4)) # To change size and ratio of graph
-    plt.plot(df['Date'], df['Symptom1'], label='Where is your pain the worst?')
-    plt.plot(df['Date'], df['Symptom2'], label='Is your pain constant?')
-    plt.plot(df['Date'], df['Symptom3'], label='Does your pain get worse when bending?')
-    plt.plot(df['Date'], df['Symptom4'], label='Does your pain get worse when sitting or standing?')
-    # Add more plots for other symptoms
+    # Prepare the Oswestry total data for plotting
+    oswentry_total_data = {
+        'Date': [row[0] for row in oswentry_total],
+        'Score': [row[1] for row in oswentry_total]
+    }
+    oswentry_df = pd.DataFrame(oswentry_total_data)
 
+    # Create the Oswestry graph
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score1'], label='Pain Intensity')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
     plt.xlabel('Date')
-    plt.ylabel('Symptom Severity')
-    plt.title('Symptom Progression Over Time')
-    plt.grid(True, linestyle='--') #to include gridlines, easier to read
-    # plt.yticks(fontsize=4) #for chaning font of y-axis labels
-    plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0) # To get the legend out of the graph
-    #plt.legend() # To let the legend be in the plot at the best place
-    # Save the plot to a file
-    plot_filename="RedFlagsBITS/static/img/progress_plot.png"
-    plt.savefig(plot_filename, bbox_inches = 'tight') #to prevent cropping any part of the graph
-    return render_template('Progress.html', plot_filename="/static/img/progress_plot.png")
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_1 = "static/img/oswestry1.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_1, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score2'], label='Personal Care')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_2 = "static/img/oswestry2.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_2, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score3'], label='Lifting')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_3 = "static/img/oswestry3.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_3, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score4'], label='Walking')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_4 = "static/img/oswestry4.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_4, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score5'], label='Sitting')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_5 = "static/img/oswestry5.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_5, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score6'], label='Standing')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_6 = "static/img/oswestry6.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_6, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score7'], label='Sleeping')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_7 = "static/img/oswestry7.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_7, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score8'], label='Social Life')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_8 = "static/img/oswestry8.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_8, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score9'], label='Traveling')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_9 = "static/img/oswestry9.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_9, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(6, 3))
+    plt.plot(oswentry_individual_df['Date'], oswentry_individual_df['Score10'], label='Employment/Homemaking')
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,5) #Range of symptom severity
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_10 = "static/img/oswestry10.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_10, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(oswentry_df['Date'], oswentry_df['Score'], label='Disability score')
+    ax=plt.subplot()
+    plt.xticks(fontsize=5)
+    plt.yticks(fontsize=10)
+    plt.ylim(0,50) #Range of symptom severity
+    ax.set_yticks((0, 5, 10, 15, 20, 25, 30, 35, 40, 50))
+    ax.set_yticklabels(("No disability", "Mild disability", "10", "Moderate disability", "20", 
+                        "Severe disability", "30", "Completely disabled", "40", "50"))
+    plt.legend()
+    plt.xlabel('Date')
+    plt.ylabel('Disability Severity')
+    plt.title('Progression Over Time')
+    plt.grid(True, linestyle='--')
+    oswentry_all = "static/img/oswestry.png" # Save the Oswestry graph to a file
+    plt.savefig(oswentry_all, bbox_inches='tight') #to prevent cropping any part of the graph
+
+    return render_template('Progress.html', oswentry_1=oswentry_1, oswentry_2=oswentry_2,oswentry_3=oswentry_3,
+                            oswentry_4=oswentry_4, oswentry_5=oswentry_5, oswentry_6=oswentry_6, oswentry_7=oswentry_7,
+                            oswentry_8=oswentry_8, oswentry_9=oswentry_9, oswentry_10=oswentry_10, oswentry_all=oswentry_all)  
 
 
 @app.route('/OSWENTRY_Back_Pain')
@@ -305,11 +484,17 @@ def Lower_Backpain():
 
 @app.route('/OSWENTRY_Back_Pain', methods=['POST'])
 def OSWENTRY_Low_Back_Pain_Questionaire_evaluation():
-    """
-
-    """
-    score = model.score_OSWENTRY(request.form)
+    score, symptoms_data = model.score_OSWENTRY(request.form)
     disability = model.get_disability_level_from_score(score)
+    today = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    cursor.execute("INSERT INTO oswentry_individual (datetime_column, score1, score2, score3, score4, score5, score6, score7, score8, score9, score10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                   (today, symptoms_data[0], symptoms_data[1], symptoms_data[2], symptoms_data[3], symptoms_data[4],
+                    symptoms_data[5], symptoms_data[6], symptoms_data[7], symptoms_data[8], symptoms_data[9]))
+    db.commit()
+    cursor.execute("INSERT INTO oswentry_total (datetime_column, score) VALUES (?, ?)",
+                   (today, score))
+    db.commit()
+    db.close()
     return render_template('OSWENTRY_Results.html', score=score, disability=disability)
 
 

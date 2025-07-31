@@ -99,12 +99,15 @@ def score_OSWENTRY(answers):
     questions = get_OSWENTRY_Questionnaire()
     question_length = len(questions)
     score = 0
+    symptoms_data = []
     for i in range(question_length):
         answer = answers.get(f'{i + 1}')
         if answer is None:
+            symptoms_data.append("NULL")
             continue
         score += (questions[i].index(answer) - 2)
-    return score
+        symptoms_data.append((questions[i].index(answer) - 2))
+    return score, symptoms_data
 
 def get_disability_level_from_score(score):
     if score < 5:
