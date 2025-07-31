@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Symptom Checker Results</title>
+</head>
+<body>
+    <h1>Symptom Checker Results</h1>
+    <h2>Selected Symptoms:</h2>
+    <p>{{ selected_symptoms }}</p>
+    <ul>
+        {% for questions in vind_quest %}
+            <li>{{ questions }}</li>
+            {% if '-' in questions %}
+                <input type="text" name="responses" value="" required>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+</html>
