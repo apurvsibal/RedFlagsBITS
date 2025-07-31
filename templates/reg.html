@@ -1,0 +1,112 @@
+{% extends "layout1.html" %}
+
+{% block content %}
+
+{% with messages=get_flashed_messages() %}
+  {% if messages %}
+    <script type="text/javascript">
+      var m={{ messages|safe }};
+      for(var i=0;i<m.length;i++)
+      {
+        alert(m[i]);
+      }
+    </script>
+  {% endif %}
+{% endwith %}
+
+
+
+<h1>Doctor Diagnostics page</h1>
+<form class="form-horizontal" action="{{url_for('register')}}" method="POST">
+
+  
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="pwd">Name of the patient:</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+    </div>
+  </div>
+
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="pwd">Email:</label>
+    <div class="col-sm-6">
+      <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+    </div>
+  </div>
+
+      <div class="form-group">
+    <label class="control-label col-sm-2" for="pwd">Phone_no:</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="phno" name="phno" placeholder="Enter Phno">
+    </div>
+  </div>
+
+  <div class="form-group">
+ <label class="control-label col-sm-2" for="pwd">Medical Department</label>
+ <div class="col-sm-6">
+ <select class="form-control" id="College" name="college">
+   <option value="MED">Medicine</option>
+   <option value="NES">Neurosurgery</option>
+   <option value="NEP">Nephrology</option>
+   <option value="ONC">Oncology</option>
+
+ </select>
+</div>
+</div>
+
+
+  <div class="form-group">
+ <label class="control-label col-sm-2" for="pwd">Doctor to consult:</label>
+ <div class="col-sm-6">
+ <select class="form-control" id="branch" name="branch">
+   <option value="X">Dr. X</option>
+   <option value="Y">Dr. Y</option>
+   <option value="Z">Dr. Z</option>
+ </select>
+</div>
+</div>
+
+  
+
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="pwd">Gender:</label>
+    <div class="col-sm-6">
+    <div class="radio_inline">
+        <label class="radio-inline"><input type="radio" name="gender" value="Male">Male</label>
+<label class="radio-inline"><input type="radio" name="gender" value="Female">Female</label>
+<label class="radio-inline"><input type="radio" name="gender" value="Others">Others</label>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pwd">Diagnosed Disease Name</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="rollno" name="rollno" placeholder="Enter Disease Here.....">
+       
+      </div>
+    </div>
+ 
+
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pwd">Symptoms:</label>
+      <div class="col-sm-6">
+        <div class="radio_inline">
+          <input type="text" class="form-control" id="rollno" name="rollno" placeholder="Enter Symptoms Here.....">
+          
+          </div>
+      </div>
+    </div>     
+
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+  </div>
+</form>
+	
+
+
+{% endblock %}
