@@ -9,9 +9,9 @@
 </head>
 {% block content %}
     <nav class="navbar">
-        <a class="home left_button" href="{{ url_for('index')}}">Restart</a>
-        <span class="title">Back Pain</span>
-        <a class="home right_button" href="{{ url_for('login')}}">Log In</a>
+        <a class="home left_button" href="{{ url_for('index')}}">{{ translate_text('Restart') }}</a>
+        <span class="title">{{ translate_text('Back Pain') }}</span>
+        <a class="home right_button" href="{{ url_for('login')}}">{{ translate_text('Log In') }}</a>
     </nav>
     <div class="form-container">
         <div class="form-main">
@@ -45,7 +45,7 @@
                     <input autocomplete="off" autofocus class="form-control mx-auto w-auto mandatory" id="confirm_password" name="confirm_password" placeholder="Confirm Password" type="password">
                 </div>
                 <div>
-                    <button class="default_button" type="submit" style="width:100px;">Register</button>
+                    <button class="default_button" type="submit" style="width:100px;">{{ translate_text('Register') }}</button>
                 </div>
             </form>
         </div>
