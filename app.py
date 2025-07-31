@@ -272,33 +272,34 @@ def diagnosis_information():
     """
 
     """
-    questions = model.get_diagnosis()
     post_URL = url_for('diagnosis_information')
-    return render_template('diagnosis.html', questions=questions, post_URL=post_URL)
+    return render_template('diagnosis.html', post_URL=post_URL)
 
-@app.route("/Acute_Backpain")
-def Acute_Backpain():
+@app.route('/acute_backpain')
+def acute_backpain():
+    # Render the HTML page with the information for Acute Backpain
+    return render_template('Acute.html')
 
-    return render_template("Acute.html")
+@app.route('/subacute_backpain')
+def subacute_backpain():
+    # Render the HTML page with the information for Subacute Backpain
+    return render_template('Subacute.html')
 
-@app.route("/Subacute_Backpain")
-def Subacute_Backpain():
-    return render_template("Subacute.html")
 
-@app.route("/Chronic_Backpain")
+@app.route("/chronic_backpain")
 def Chronic_Backpain():
     return render_template("Chronic.html")
 
-@app.route("/Upper_Backpain")
+@app.route("/upper_backpain")
 def Upper_Backpain():
     return render_template("Upper.html")
 
-@app.route("/Middle_Backpain")
+@app.route("/middle_backpain")
 def Middle_Backpain():
     return render_template("Middle.html")
 
 
-@app.route("/Lower_Backpain")
+@app.route("/lower_backpain")
 def Lower_Backpain():
     return render_template("Lower.html")
 
@@ -319,5 +320,5 @@ def temp_placeholder():
 
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run()
 # I wonder if we need to designate the run env. ex. (debug=True, host='0.0.0.0')???
