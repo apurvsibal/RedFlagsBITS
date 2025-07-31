@@ -1,6 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'Base.html' %}
+
+{% block content %}
+    <div style="display: flex; justify-content: center">
+    <form method="post" action="{{ post_URL }}">
+        <div style="text-align: left">
+
     <title>Acute Back Pain</title>
 </head>
 <body>
@@ -40,3 +44,7 @@
 </body>
 </html>
 
+
+    </form>
+    </div>
+{% endblock %}
